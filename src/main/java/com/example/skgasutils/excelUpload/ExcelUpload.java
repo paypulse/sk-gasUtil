@@ -35,46 +35,48 @@ public class ExcelUpload {
 
 
         FileInput check = new FileInput();
-
-        //inputStream 나중에 따로 빼기
-        InputStream is = file.getInputStream();
-        Tika tika = new Tika();
-        String mimeType = tika.detect(is);
-        log.info("mimType:  ", mimeType);
-
-
-
-        Workbook workbook= new XSSFWorkbook(file.getInputStream());
-        log.info("workbook check : " , workbook);
-        Sheet worksheet = workbook.getSheetAt(0);
-
-
-
         Row row;
         List<ExcelEmpVo> infos = new ArrayList<>();
+        //등록 피평가자
+
+
         DataFormatter formatter = new DataFormatter();
 
-        for (int i = 2; i < worksheet.getPhysicalNumberOfRows(); i++) { // 1번째 행부터 끝까지
-            row = worksheet.getRow(i);
-            ExcelEmpVo data = new ExcelEmpVo();
-            data.setEmpId(row.getCell(1).getStringCellValue());
-            data.setMng1Id(row.getCell(9).getStringCellValue());
-            data.setMng3Id(formatter.formatCellValue(row.getCell(11)));
-            data.setCdpNm(formatter.formatCellValue(row.getCell(13)));
-            infos.add(data);
+        if(check.filecheck(file)){
 
+            Sheet worksheet = check.worksheet(file);
+            for (int i = 2; i < worksheet.getPhysicalNumberOfRows(); i++) { // 1번째 행부터 끝까지
+                row = worksheet.getRow(i);
+                ExcelEmpVo data = new ExcelEmpVo();
+                data.setEmpId(row.getCell(1).getStringCellValue());
+                data.setMng1Id(row.getCell(9).getStringCellValue());
+                data.setMng3Id(formatter.formatCellValue(row.getCell(11)));
+                data.setCdpNm(formatter.formatCellValue(row.getCell(13)));
+                infos.add(data);
+            }
+
+
+            //
+
+
+
+
+            return ResponseEntity.ok(CommonRes.builder()
+                    .data(infos)
+                    .status("SUCCESS")
+                    .msg("check test")
+                    .build());
+
+
+        }else{
+            return ResponseEntity.ok(CommonRes.builder()
+                    .data("{}")
+                    .status("FALSE")
+                    .msg("no file")
+                    .build());
         }
 
 
-
-
-
-
-        return ResponseEntity.ok(CommonRes.builder()
-                .data(infos)
-                .status("SUCCESS")
-                .msg("check test")
-                .build());
     }
 
 }
