@@ -35,16 +35,6 @@ public class ExcelUpload {
 
 
         FileInput check = new FileInput();
-        try{
-
-        }catch (IO)
-
-
-        if(check.checkInputStream(file)){
-
-        }else{
-
-        }
 
         //inputStream 나중에 따로 빼기
         InputStream is = file.getInputStream();

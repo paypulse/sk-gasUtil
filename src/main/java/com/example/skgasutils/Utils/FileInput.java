@@ -10,11 +10,5 @@ public class FileInput {
     /**
      * file input stream check
      * */
-    public boolean checkInputStream(MultipartFile file) throws IOException {
-        InputStream is = file.getInputStream();
-
-
-    }
-
 
 }
