@@ -14,6 +14,9 @@ public class EvuEmpVo {
     private String evuStdId;
     //사번
     private String evuEmpId;
+
+    //현재 stepCD
+
     //2차 평가 여부 (Y/N)
     private String evu2Yn;
 

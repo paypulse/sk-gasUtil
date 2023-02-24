@@ -2,6 +2,7 @@ package com.example.skgasutils.excelUpload;
 
 import com.example.skgasutils.Utils.CommonRes;
 import com.example.skgasutils.Utils.FileInput;
+import com.example.skgasutils.excelUpload.Service.ExcelUploadService;
 import com.example.skgasutils.excelUpload.excelVo.ExcelEmpVo;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,12 @@ import java.util.List;
 @NoArgsConstructor
 @Controller
 public class ExcelUpload {
+
+
+
+    @Autowired
+    private ExcelUploadService excelUploadService;
+
 
     /**
      * Excel upload
@@ -55,18 +63,11 @@ public class ExcelUpload {
                 infos.add(data);
             }
 
-
-            //
-
-
-
-
             return ResponseEntity.ok(CommonRes.builder()
                     .data(infos)
                     .status("SUCCESS")
                     .msg("check test")
                     .build());
-
 
         }else{
             return ResponseEntity.ok(CommonRes.builder()
@@ -76,8 +77,65 @@ public class ExcelUpload {
                     .build());
         }
 
+    }
+
+
+    /**
+     * Excel upload and Emp save
+     * **/
+    @PostMapping("/uploadEmpSave")
+    public ResponseEntity<CommonRes> uploadEmpSave(@RequestParam("file")MultipartFile file,@RequestParam String evuStdId,Model model) throws IOException {
+
+
+        FileInput check = new FileInput();
+        Row row = null;
+
+        DataFormatter formatter = new DataFormatter();
+
+        if(check.filecheck(file)){
+
+            Sheet worksheet = check.worksheet(file);
+            for (int i = 2; i < worksheet.getPhysicalNumberOfRows(); i++) { // 1번째 행부터 끝까지
+                row = worksheet.getRow(i);
+            }
+
+            try{
+                int rv = excelUploadService.insertEvuEmp(row, evuStdId);
+                if(rv >=1){
+                    //insert 됨
+                    return ResponseEntity.ok(CommonRes.builder()
+                            .msg("SUCCESS")
+                            .build());
+                }else{
+                    //insert 안됨
+                    return ResponseEntity.ok(CommonRes.builder()
+                            .msg("fail")
+                            .build());
+                }
+
+            }catch (Exception e){
+                return ResponseEntity.ok(CommonRes.builder()
+                        .data(e)
+                        .msg(e.getMessage())
+                        .build());
+            }
+
+
+        }else{
+            return ResponseEntity.ok(CommonRes.builder()
+                    .status("FALSE")
+                    .msg("no file")
+                    .build());
+        }
+
 
     }
+
+
+
+
+
+
 
 }
 
