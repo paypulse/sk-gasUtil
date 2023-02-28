@@ -84,34 +84,38 @@ public class ExcelUpload {
      * Excel upload and Emp save
      * **/
     @PostMapping("/uploadEmpSave")
-    public ResponseEntity<CommonRes> uploadEmpSave(@RequestParam("file")MultipartFile file,@RequestParam String evuStdId,Model model) throws IOException {
+    public ResponseEntity<CommonRes> uploadEmpSave(@RequestParam(value="file", required = false)MultipartFile file,@RequestParam String evuStdId,Model model) throws IOException {
 
 
         FileInput check = new FileInput();
-        Row row = null;
+
 
         DataFormatter formatter = new DataFormatter();
+
+        int rv=0;
 
         if(check.filecheck(file)){
 
             Sheet worksheet = check.worksheet(file);
-            for (int i = 2; i < worksheet.getPhysicalNumberOfRows(); i++) { // 1번째 행부터 끝까지
-                row = worksheet.getRow(i);
-            }
 
             try{
-                int rv = excelUploadService.insertEvuEmp(row, evuStdId);
+
+                rv =excelUploadService.insertEvuEmp(worksheet, evuStdId);
+
                 if(rv >=1){
                     //insert 됨
                     return ResponseEntity.ok(CommonRes.builder()
-                            .msg("SUCCESS")
+                            .data(rv)
+                            .msg("insert success")
                             .build());
                 }else{
                     //insert 안됨
                     return ResponseEntity.ok(CommonRes.builder()
-                            .msg("fail")
+                            .data(rv)
+                            .msg("insert fail")
                             .build());
                 }
+
 
             }catch (Exception e){
                 return ResponseEntity.ok(CommonRes.builder()
