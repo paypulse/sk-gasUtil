@@ -15,8 +15,9 @@ public interface ExcelUploadService {
 
 
     /**
-     *
+     * 2. 피평가자 <-> 평가자 맵핑
      * */
+    public int insertMngEmp(Sheet worksheet, String evuStdId);
 
 
 }

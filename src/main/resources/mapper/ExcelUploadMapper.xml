@@ -3,12 +3,13 @@
 <mapper namespace="com.example.skgasutils.mapper.ExcelUploadMapper">
 
     <!-- excel emp upload -->
-<!--    <update id="insertEvuEmpId" parameterType="EvuEmpVo">-->
-
-
-
-
-<!--    </update>-->
+    <insert id="insertEvuEmpId" parameterType="list">
+        INSERT INTO EVU_EMP(EVU_STD_ID, EVU_EMP_ID, CUR_STEP_CD, EVU_STAT_CD, CHASU, EVU2_YN, CDP_CD, INS_USER_ID, INS_YMDHMS)
+        VALUES
+        <foreach collection="totalEmpList" item="emp" index="hashmap" separator=",">
+            (#{emp.evuStdId}, #{emp.evuEmpId}, #{emp.curStepCd}, #{emp.evuStatCd}, #{emp.chasu}, #{emp.evu2Yn}, #{emp.cdpCd}, #{emp.insUserId}, GETDATE())
+        </foreach>
+    </insert>
 
 
 

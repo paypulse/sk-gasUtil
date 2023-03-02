@@ -99,21 +99,31 @@ public class ExcelUpload {
             Sheet worksheet = check.worksheet(file);
 
             try{
-
                 rv =excelUploadService.insertEvuEmp(worksheet, evuStdId);
 
                 if(rv >=1){
                     //insert 됨
                     return ResponseEntity.ok(CommonRes.builder()
                             .data(rv)
+                            .status("SUCCESS")
                             .msg("insert success")
                             .build());
                 }else{
-                    //insert 안됨
-                    return ResponseEntity.ok(CommonRes.builder()
-                            .data(rv)
-                            .msg("insert fail")
-                            .build());
+                    if(rv == 0){
+                        return ResponseEntity.ok(CommonRes.builder()
+                                .data(rv)
+                                .msg("이미 등록된 사용자 입니다.")
+                                .status("SUCCESS")
+                                .build());
+                    }else{
+                        //insert 안됨
+                        return ResponseEntity.ok(CommonRes.builder()
+                                .msg("insert fail")
+                                .status("FAIL")
+                                .build());
+                    }
+
+
                 }
 
 
@@ -127,13 +137,82 @@ public class ExcelUpload {
 
         }else{
             return ResponseEntity.ok(CommonRes.builder()
-                    .status("FALSE")
+                    .status("FAIL")
                     .msg("no file")
                     .build());
         }
 
 
     }
+
+    /**
+     * 피평가자 <-> 평가자 맵핑
+     * **/
+    @PostMapping("/uploadMngEmpSave")
+    public ResponseEntity<CommonRes> uploadMngEmpSave(@RequestParam(value="file", required = false)MultipartFile file,@RequestParam String evuStdId,Model model) throws IOException {
+
+
+        FileInput check = new FileInput();
+
+
+        DataFormatter formatter = new DataFormatter();
+
+        int rv=0;
+
+        if(check.filecheck(file)){
+
+            Sheet worksheet = check.worksheet(file);
+
+
+            try{
+                rv =excelUploadService.insertMngEmp(worksheet, evuStdId);
+
+                if(rv >=1){
+                    //insert 됨
+                    return ResponseEntity.ok(CommonRes.builder()
+                            .data(rv)
+                            .status("SUCCESS")
+                            .msg("insert success")
+                            .build());
+                }else{
+                    if(rv == 0){
+                        return ResponseEntity.ok(CommonRes.builder()
+                                .data(rv)
+                                .msg("이미 등록된 사용자 입니다.")
+                                .status("SUCCESS")
+                                .build());
+                    }else{
+                        //insert 안됨
+                        return ResponseEntity.ok(CommonRes.builder()
+                                .msg("insert fail")
+                                .status("FAIL")
+                                .build());
+                    }
+
+
+                }
+
+
+            }catch (Exception e){
+                return ResponseEntity.ok(CommonRes.builder()
+                        .data(e)
+                        .msg(e.getMessage())
+                        .build());
+            }
+
+
+        }else{
+            return ResponseEntity.ok(CommonRes.builder()
+                    .status("FAIL")
+                    .msg("no file")
+                    .build());
+        }
+
+
+    }
+
+
+
 
 
 

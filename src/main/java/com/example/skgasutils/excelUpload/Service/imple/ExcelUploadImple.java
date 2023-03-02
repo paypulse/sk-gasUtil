@@ -11,11 +11,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.function.Predicate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,6 +64,47 @@ public class ExcelUploadImple implements ExcelUploadService {
             return o.getEvuEmpId().equals(n.getEvuEmpId());
         })).collect(Collectors.toList());
 
+        if(totalEmpList.size()>0){
+            /**
+             * 피평가자 등록
+             * **/
+            return excelUpoadMaper.insertEvuEmpId(totalEmpList);
+        }else{
+            return totalEmpList.size();
+        }
+
+
+    }
+
+
+    /**
+     * 피평가자 <-> 평가자 맵핑
+     * **/
+    @Override
+    public int insertMngEmp(Sheet worksheet, String evuStdId) {
+        Row row = null;
+        //evuEmpList
+        List<EvuEmp> empList = commonMapper.getEvuEmpList(evuStdId);
+
+        //newEmpList
+        List<ExcelEmpVo> newEmpList = new ArrayList<>();
+
+        //empList에서 row에서 가져온 id를가지고 empno를 찾아 오기
+        System.out.println("empList :" + empList);
+
+        for(int i=2;i<worksheet.getPhysicalNumberOfRows();i++){
+            row = worksheet.getRow(i);
+            //row에서 id를 가져 오자.
+            ExcelEmpVo data  = new ExcelEmpVo();
+            data.setEmpId(row.getCell(1).getStringCellValue());
+
+            //가지고 온 row의 id와 empList의 id를 비교해서 해당 empNo를 가져 오자.
+
+
+
+            newEmpList.add(data);
+        }
+
 
 
 
@@ -75,4 +112,11 @@ public class ExcelUploadImple implements ExcelUploadService {
 
         return 0;
     }
+
+
+
+
+
+
+
 }
