@@ -1,11 +1,13 @@
 package com.example.skgasutils.mapper;
 
 import com.example.skgasutils.repository.EvuEmp;
+import com.example.skgasutils.repository.EvuMng;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Mapper
@@ -17,5 +19,9 @@ public interface CommonMapper {
      * */
     public List<EvuEmp> getEvuEmpList(String evuStdId);
 
+    /**
+     * EvuMng check
+     * */
+    public List<EvuMng> getEvuMngList();
 
 }

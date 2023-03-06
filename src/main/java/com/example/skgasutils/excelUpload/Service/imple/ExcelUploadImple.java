@@ -1,18 +1,24 @@
 package com.example.skgasutils.excelUpload.Service.imple;
 
+import com.example.skgasutils.Utils.FileInput;
 import com.example.skgasutils.excelUpload.Service.ExcelUploadService;
 import com.example.skgasutils.excelUpload.excelVo.ExcelEmpVo;
 import com.example.skgasutils.mapper.CommonMapper;
 import com.example.skgasutils.mapper.ExcelUploadMapper;
 import com.example.skgasutils.repository.EvuEmp;
+import com.example.skgasutils.repository.EvuMng;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+
 
 @Service
 @Slf4j
@@ -82,36 +88,47 @@ public class ExcelUploadImple implements ExcelUploadService {
      * **/
     @Override
     public int insertMngEmp(Sheet worksheet, String evuStdId) {
-        Row row = null;
-        //evuEmpList
+        //평가자 list
         List<EvuEmp> empList = commonMapper.getEvuEmpList(evuStdId);
+        //피평가자 list
+        List<EvuMng> mngList = commonMapper.getEvuMngList();
 
-        //newEmpList
-        List<ExcelEmpVo> newEmpList = new ArrayList<>();
-
-        //empList에서 row에서 가져온 id를가지고 empno를 찾아 오기
-        System.out.println("empList :" + empList);
-
-        for(int i=2;i<worksheet.getPhysicalNumberOfRows();i++){
-            row = worksheet.getRow(i);
-            //row에서 id를 가져 오자.
-            ExcelEmpVo data  = new ExcelEmpVo();
-            data.setEmpId(row.getCell(1).getStringCellValue());
-
-            //가지고 온 row의 id와 empList의 id를 비교해서 해당 empNo를 가져 오자.
+        //1차 평가자
+        int resultMng1 =0;
+        //최종 평가자
+        int resultMng3 =0;
 
 
+        Map<String,Object> insertInfo = new HashMap<>();
+        insertInfo.put("empList", empList);
+        insertInfo.put("mngList", mngList);
+        insertInfo.put("workSheet", worksheet);
+        insertInfo.put("evuStdId",evuStdId);
 
-            newEmpList.add(data);
+        FileInput fileInput = new FileInput();
+
+        //1차 평가자 insert 결과
+        List<ExcelEmpVo> mng1 = fileInput.insertMngList(1, insertInfo);
+        //최종 평가자 insert 결과
+        List<ExcelEmpVo> mng3 = fileInput.insertMngList(3, insertInfo);
+
+        System.out.println("check mng3 : " + mng3);
+        System.out.println("check mng3 size : " + mng3.size());
+
+        if(mng1.size() >0){
+            resultMng1 = excelUpoadMaper.insertEvuMng1(mng1);
+        }
+
+        if(mng3.size() >0){
+            resultMng3 = excelUpoadMaper.insertEvuMng3(mng3);
         }
 
 
-
-
-
-
-        return 0;
+        return resultMng1 + resultMng3;
     }
+
+
+
 
 
 

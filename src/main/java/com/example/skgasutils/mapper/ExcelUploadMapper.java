@@ -12,4 +12,15 @@ public interface ExcelUploadMapper {
      * Excelupload후 insert
      * */
     int insertEvuEmpId(List<ExcelEmpVo> totalEmpList);
+
+    /**
+     * 1차 평가자 insert
+     * **/
+    int insertEvuMng1(List<ExcelEmpVo> mngList1);
+
+    /**
+     * 최종 평가자 insert
+     * */
+    int insertEvuMng3(List<ExcelEmpVo> mngList3);
+
 }

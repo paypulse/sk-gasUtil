@@ -8,6 +8,11 @@
         WHERE EVU_STD_ID = #{evuStdId}
     </select>
 
+    <select id="getEvuMngList" resultType="EvuMng">
+        select *
+        from EVU_MNG
+    </select>
+
 
 
 

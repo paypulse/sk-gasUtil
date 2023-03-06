@@ -11,6 +11,23 @@
         </foreach>
     </insert>
 
+    <!-- 1차 평가자 insert-->
+    <insert id="insertEvuMng1" parameterType="List">
+        INSERT INTO EVU_MNG( EVU_MNG_ID,EVU_EMP_NO,CHASU,APPLY_DATE,INS_USER_ID,INS_YMDHMS,MOD_USER_ID,MOD_YMDHMS,MNG_STAT_CD,TEMPORARY_YN)
+        VALUES
+        <foreach collection="mngList1" item="mng" index="hashmap" separator=",">
+            (#{mng.mng1Id},#{mng.evuEmpNo},#{mng.chasu},GETDATE(),#{mng.insUserId},GETDATE(),'',GETDATE(),#{mng.mngStatCd},'')
+        </foreach>
+    </insert>
+
+    <!-- 최종 평가자 insert -->
+    <insert id="insertEvuMng3" parameterType="List">
+        INSERT INTO EVU_MNG( EVU_MNG_ID,EVU_EMP_NO,CHASU,APPLY_DATE,INS_USER_ID,INS_YMDHMS,MOD_USER_ID,MOD_YMDHMS,MNG_STAT_CD,TEMPORARY_YN)
+        VALUES
+        <foreach collection="mngList3" item="mng" index="hashmap" separator=",">
+            (#{mng.mng3Id},#{mng.evuEmpNo},#{mng.chasu},GETDATE(),#{mng.insUserId},GETDATE(),'',GETDATE(),#{mng.mngStatCd},'')
+        </foreach>
+    </insert>
 
 
 
