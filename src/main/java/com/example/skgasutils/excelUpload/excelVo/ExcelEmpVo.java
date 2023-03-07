@@ -39,6 +39,8 @@ public class ExcelEmpVo {
     private String cdpCd;
     //등록id
     private String insUserId;
+    //stepCD
+    private String stepCd;
 
 
 

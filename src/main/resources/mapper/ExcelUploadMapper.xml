@@ -29,6 +29,15 @@
         </foreach>
     </insert>
 
+    <!-- cdp_cd mapping insert -->
+    <insert id="insertCdpCd" parameterType="List">
+        INSERT INTO EVU_EMP_CDP(EVU_EMP_NO,STEP_CD,EVU_STD_ID,CDP_CD,INS_USER_ID,INS_YMDHMS,MOD_USER_ID,MOD_YMDHMS)
+        VALUES
+        <foreach collection="cdpList" item="cdp" index="hashmap" separator=",">
+            (#{cdp.evuEmpNo},#{cdp.stepCd},#{cdp.evuStdId},#{cdp.cdpCd},#{cdp.insUserId},GETDATE(),'','')
+        </foreach>
+    </insert>
+
 
 
 </mapper>

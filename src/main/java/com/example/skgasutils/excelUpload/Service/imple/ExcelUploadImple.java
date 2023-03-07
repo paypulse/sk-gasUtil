@@ -5,7 +5,9 @@ import com.example.skgasutils.excelUpload.Service.ExcelUploadService;
 import com.example.skgasutils.excelUpload.excelVo.ExcelEmpVo;
 import com.example.skgasutils.mapper.CommonMapper;
 import com.example.skgasutils.mapper.ExcelUploadMapper;
+import com.example.skgasutils.repository.EvuCdp;
 import com.example.skgasutils.repository.EvuEmp;
+import com.example.skgasutils.repository.EvuEmpCdp;
 import com.example.skgasutils.repository.EvuMng;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -14,6 +16,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -126,6 +129,82 @@ public class ExcelUploadImple implements ExcelUploadService {
 
         return resultMng1 + resultMng3;
     }
+
+
+    /**
+     * 피 평가자 CDP 맵핑
+     * */
+    @Override
+    public int insertEmpCdp(Sheet worksheet, String evuStdId) {
+
+        List<EvuCdp> cdpList = commonMapper.getEvuCdp(evuStdId);
+        List<EvuEmp> empList = commonMapper.getEvuEmpList(evuStdId);
+        List<EvuEmpCdp> empCdpList = commonMapper.getEvuEmpCdp();
+
+
+        List<ExcelEmpVo> excelList = new ArrayList<>();
+        List<ExcelEmpVo> insertEmpCdpList = new ArrayList<>();
+
+        int resultCdpMapping =0;
+
+
+        //formatter
+        DataFormatter formatter = new DataFormatter();
+
+        //cdp_nm에서 cdp_cd 가져 오기
+        Row row = null;
+          for(int i=2;i<worksheet.getPhysicalNumberOfRows();i++){
+            row = worksheet.getRow(i);
+
+            ExcelEmpVo data = new ExcelEmpVo();
+
+            data.setEmpId(row.getCell(1).getStringCellValue());
+            data.setEvuEmpId(row.getCell(1).getStringCellValue());
+            Optional<EvuEmp> emp = empList.stream().filter(s -> s.getEvuEmpId().equals(data.getEmpId())).findAny();
+            data.setEvuEmpNo(Integer.toString(emp.get().getEvuEmpNo()));
+
+            //cdp_cd
+            Row finalRow = row;
+            String cdpNm = formatter.formatCellValue(finalRow.getCell(13));
+            Optional<EvuCdp> cdp = cdpList.stream().filter(s -> s.getCdpNm().equals(cdpNm)).findAny();
+            if(cdp.isPresent()){
+                data.setCdpCd(cdp.get().getCdpCd());
+            }else{
+                data.setCdpCd("");
+            }
+
+            data.setStepCd("B0");
+            data.setEvuStdId(evuStdId);
+            data.setInsUserId("00812");
+            excelList.add(data);
+          }
+
+        //중복을 허용하지 말아야 하는데 , evu_emp_no, step_cd, evu_std_id
+        insertEmpCdpList = excelList.stream()
+                .filter(n -> empCdpList.stream().noneMatch( a ->{
+                    return (a.getEvuEmpNo() == Integer.parseInt(n.getEvuEmpNo()) );
+                }))
+                .filter(n -> empCdpList.stream().noneMatch( b ->{
+                    return b.getStepCd().equals(n.getStepCd());
+                }))
+                .filter(n -> empCdpList.stream().noneMatch( c ->{
+                    return c.getEvuStdId().equals(evuStdId);
+                }))
+                .collect(Collectors.toList());
+
+        System.out.println(insertEmpCdpList.size());
+
+
+
+//        if(insertEmpCdpList.size() > 1){
+//
+//            resultCdpMapping = excelUpoadMaper.insertCdpCd(insertEmpCdpList);
+//        }
+
+
+        return resultCdpMapping;
+    }
+
 
 
 

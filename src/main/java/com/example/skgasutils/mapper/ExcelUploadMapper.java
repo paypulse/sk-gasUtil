@@ -23,4 +23,9 @@ public interface ExcelUploadMapper {
      * */
     int insertEvuMng3(List<ExcelEmpVo> mngList3);
 
+    /**
+     * cdp_cd mapping
+     * **/
+    int insertCdpCd(List<ExcelEmpVo> cdpList);
+
 }

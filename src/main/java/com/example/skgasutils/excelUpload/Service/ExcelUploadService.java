@@ -19,5 +19,14 @@ public interface ExcelUploadService {
      * */
     public int insertMngEmp(Sheet worksheet, String evuStdId);
 
+    /**
+     * 3. 피 평가자 CDP 맵핑
+     * */
+    public int insertEmpCdp(Sheet worksheet, String evuStdId);
+
+
+
+
+
 
 }
