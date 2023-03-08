@@ -4,6 +4,8 @@ import com.example.skgasutils.Utils.CommonRes;
 import com.example.skgasutils.Utils.FileInput;
 import com.example.skgasutils.excelUpload.Service.ExcelUploadService;
 import com.example.skgasutils.excelUpload.excelVo.ExcelEmpVo;
+
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -11,11 +13,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -24,9 +28,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+
 @Slf4j
 @NoArgsConstructor
-@Controller
+@RestController
 public class ExcelUpload {
 
 
@@ -38,8 +43,9 @@ public class ExcelUpload {
     /**
      * Excel upload
      * **/
-    @PostMapping("/upload")
-    public ResponseEntity<CommonRes> uploadExcel(@RequestParam("file")MultipartFile file, Model model) throws TikaException, IOException {
+    @Operation(summary = "엑셀 업로드", description = "엑셀 업로드")
+    @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CommonRes> uploadExcel(@RequestParam("file")MultipartFile file,@RequestParam String evuStdId) throws TikaException, IOException {
 
 
         FileInput check = new FileInput();
@@ -83,8 +89,9 @@ public class ExcelUpload {
     /**
      * Excel upload and Emp save
      * **/
-    @PostMapping("/uploadEmpSave")
-    public ResponseEntity<CommonRes> uploadEmpSave(@RequestParam(value="file", required = false)MultipartFile file,@RequestParam String evuStdId,Model model) throws IOException {
+    @Operation(summary = "Emp 업로드", description = "엑셀로 피평가자 업로드")
+    @PostMapping(value = "/uploadEmpSave" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CommonRes> uploadEmpSave(@RequestParam(value="file", required = false)MultipartFile file,@RequestParam String evuStdId) throws IOException {
 
 
         FileInput check = new FileInput();
@@ -148,8 +155,8 @@ public class ExcelUpload {
     /**
      * 피평가자 <-> 평가자 맵핑
      * **/
-    @PostMapping("/uploadMngEmpSave")
-    public ResponseEntity<CommonRes> uploadMngEmpSave(@RequestParam(value="file", required = false)MultipartFile file,@RequestParam String evuStdId,Model model) throws IOException {
+    @PostMapping(value = "/uploadMngEmpSave", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CommonRes> uploadMngEmpSave(@RequestParam(value="file", required = false)MultipartFile file,@RequestParam String evuStdId) throws IOException {
 
 
         FileInput check = new FileInput();
@@ -214,8 +221,8 @@ public class ExcelUpload {
     /**
      * 피 평가자 CDP 맵핑
      * */
-    @PostMapping("/uploadCdpEmpSave")
-    public ResponseEntity<CommonRes> uploadCDPEmpSave(@RequestParam(value="file", required = false)MultipartFile file,@RequestParam String evuStdId,Model model) throws IOException {
+    @PostMapping(value = "/uploadCdpEmpSave", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CommonRes> uploadCDPEmpSave(@RequestParam(value="file", required = false)MultipartFile file,@RequestParam String evuStdId) throws IOException {
 
         /**
          * 추가.
