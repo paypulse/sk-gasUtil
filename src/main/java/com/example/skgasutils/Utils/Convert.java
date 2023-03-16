@@ -45,12 +45,19 @@ public class Convert {
         COMP_NEW_AF_GRD.put(2,"유지");
         COMP_NEW_AF_GRD.put(3, "개선");
     }
-    public static String getGrdAfShort(int score, int chasu){
-        String grdAfText = COMP_NEW_AF_GRD.get(score);
+    public static String getGrdAfShort(String score, int chasu){
+        String grdAfText = null;
         //score  null 체크
+        if(score.equals("")){
+            //널이면
+            grdAfText = "TDS"+ chasu+ "변동 방향" ;
 
+        }else{
+            grdAfText = COMP_NEW_AF_GRD.get(Integer.parseInt(score));
+        }
         return grdAfText;
     }
+
 
     /**
      * 우선 순위
@@ -61,9 +68,10 @@ public class Convert {
         PRIORITY.put(0,"Y");
         PRIORITY.put(1,"N");
     }
-    public static String getPriorityChk(int priority){
-        return PRIORITY.get(priority);
+    public static String getPriorityChk(String priority){
+        return PRIORITY.get(Integer.parseInt(priority));
     }
+
 
 
 

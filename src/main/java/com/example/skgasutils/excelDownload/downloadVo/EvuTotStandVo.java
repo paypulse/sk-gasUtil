@@ -24,6 +24,11 @@ public class EvuTotStandVo {
     private String cdpCd;
     private String priority;
 
+    /**
+     * chasu
+    **/
+    private String chasu;
+
     private String customYn;
     private String cateNm1;
     private String cateNm2;
@@ -38,17 +43,10 @@ public class EvuTotStandVo {
 
 
     public void setPriority(String priority) {
-        int priorityInt = Integer.parseInt(priority);
-        System.out.println("priorityInt :" + priorityInt);
-        this.priority = Convert.getPriorityChk(priorityInt);
+        this.priority = Convert.getPriorityChk(priority);
     }
 
-
-
-
-
-
-
-
-
+    public void setMng1Score1q(String mng1Score1q) {
+        this.mng1Score1q = mng1Score1q;
+    }
 }
