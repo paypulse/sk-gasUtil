@@ -3,6 +3,7 @@ package com.example.skgasutils.Utils;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -31,6 +32,41 @@ public class Convert {
             return grd;
         return grdText.length()>0?String.valueOf(grdText.charAt(0)):"";
     }
+
+
+    /**
+     * 역량 평가 변동 결과
+     * */
+    private static final Map<Integer, String> COMP_NEW_AF_GRD;
+    static{
+        COMP_NEW_AF_GRD = new HashMap<Integer, String>();
+        COMP_NEW_AF_GRD.put(0,"-");
+        COMP_NEW_AF_GRD.put(1,"하락");
+        COMP_NEW_AF_GRD.put(2,"유지");
+        COMP_NEW_AF_GRD.put(3, "개선");
+    }
+    public static String getGrdAfShort(int score, int chasu){
+        String grdAfText = COMP_NEW_AF_GRD.get(score);
+        //score  null 체크
+
+        return grdAfText;
+    }
+
+    /**
+     * 우선 순위
+     * **/
+    private static final Map<Integer, String> PRIORITY;
+    static {
+        PRIORITY = new HashMap<Integer, String>();
+        PRIORITY.put(0,"Y");
+        PRIORITY.put(1,"N");
+    }
+    public static String getPriorityChk(int priority){
+        return PRIORITY.get(priority);
+    }
+
+
+
 
 
 

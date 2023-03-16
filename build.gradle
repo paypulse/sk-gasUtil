@@ -15,6 +15,14 @@ configurations {
     }
 }
 
+//processResources {
+//    if(project.hasProperty('profile') && profile){
+//        from "src/main/resources/application-${profile}.properties"
+//    }
+//}
+
+
+
 repositories {
     mavenCentral()
 }
@@ -36,6 +44,8 @@ dependencies {
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+   // implementation group: 'com.okta.spring', name: 'okta-spring-boot-starter', version: '2.1.4'
+
 
 }
 
