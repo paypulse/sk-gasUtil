@@ -3,7 +3,7 @@ package com.example.skgasutils.excelDownload.downloadVo;
 
 import com.example.skgasutils.Utils.Convert;
 import lombok.*;
-
+import org.springframework.util.StringUtils;
 
 
 @NoArgsConstructor
@@ -24,11 +24,6 @@ public class EvuTotStandVo {
     private String cdpCd;
     private String priority;
 
-    /**
-     * chasu
-    **/
-    private String chasu;
-
     private String customYn;
     private String cateNm1;
     private String cateNm2;
@@ -42,11 +37,34 @@ public class EvuTotStandVo {
     private String mng1Afscore3q;
 
 
+    /**
+     * priority
+    * */
     public void setPriority(String priority) {
         this.priority = Convert.getPriorityChk(priority);
     }
 
+    /**
+     * TDS1  1차 평가
+     * */
     public void setMng1Score1q(String mng1Score1q) {
-        this.mng1Score1q = mng1Score1q;
+
+        String mng1Score = mng1Score1q;
+
+        if(mng1Score.equals("null")){
+            this.mng1Score1q = "test";
+        }else{
+            this.mng1Score1q = Convert.getTotResult(mng1Score1q);
+        }
+
+
     }
+    /**
+     * TDS1 1차  변동
+     * **/
+
+
+
+
+
 }

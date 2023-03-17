@@ -2,6 +2,7 @@ package com.example.skgasutils.excelDownload.Service.imple;
 
 import com.example.skgasutils.excelDownload.Service.ExcelDownloadService;
 import com.example.skgasutils.excelDownload.downloadVo.EvuTotDiffVo;
+import com.example.skgasutils.excelDownload.downloadVo.EvuTotStandVo;
 import com.example.skgasutils.mapper.ExcelDownloadMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,4 +31,11 @@ public class ExcelDownloadImple  implements ExcelDownloadService {
         return excelDownloadMapper.selectEvuTotDiff(param);
 
     }
+
+    @Override
+    public List<EvuTotStandVo> selectEndOfYearStandard(String evuStdId) {
+        return excelDownloadMapper.selectEndOfYearStandard(evuStdId);
+    }
+
+
 }

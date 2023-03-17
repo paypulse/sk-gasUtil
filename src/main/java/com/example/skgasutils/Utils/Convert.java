@@ -33,6 +33,27 @@ public class Convert {
         return grdText.length()>0?String.valueOf(grdText.charAt(0)):"";
     }
 
+    /**
+     * TDS 평가 결과
+     * **/
+    public static String getTotResult(String score){
+        if(score==""){
+            return "-";
+        }else{
+            return "score";
+        }
+
+//        String scoreText = COMP_NEW_GRD.get(score);
+//        System.out.println("scoreText :" + scoreText);
+//        if(scoreText.length()>0){
+//            return scoreText;
+//        }else{
+//            return "-";
+//        }
+    }
+
+
+
 
     /**
      * 역량 평가 변동 결과
@@ -45,18 +66,7 @@ public class Convert {
         COMP_NEW_AF_GRD.put(2,"유지");
         COMP_NEW_AF_GRD.put(3, "개선");
     }
-    public static String getGrdAfShort(String score, int chasu){
-        String grdAfText = null;
-        //score  null 체크
-        if(score.equals("")){
-            //널이면
-            grdAfText = "TDS"+ chasu+ "변동 방향" ;
 
-        }else{
-            grdAfText = COMP_NEW_AF_GRD.get(Integer.parseInt(score));
-        }
-        return grdAfText;
-    }
 
 
     /**
@@ -65,8 +75,8 @@ public class Convert {
     private static final Map<Integer, String> PRIORITY;
     static {
         PRIORITY = new HashMap<Integer, String>();
-        PRIORITY.put(0,"Y");
-        PRIORITY.put(1,"N");
+        PRIORITY.put(0,"N");
+        PRIORITY.put(1,"Y");
     }
     public static String getPriorityChk(String priority){
         return PRIORITY.get(Integer.parseInt(priority));

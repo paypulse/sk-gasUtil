@@ -1,6 +1,7 @@
 package com.example.skgasutils.excelDownload.Service;
 
 import com.example.skgasutils.excelDownload.downloadVo.EvuTotDiffVo;
+import com.example.skgasutils.excelDownload.downloadVo.EvuTotStandVo;
 
 import java.util.List;
 
@@ -11,5 +12,10 @@ public interface ExcelDownloadService {
     **/
     public List<EvuTotDiffVo>  selectEvuTotDiff(String evuStdId, String evuType);
 
+
+    /**
+     *  연말 평가 기준 엑셀 다운로드
+     * */
+    public List<EvuTotStandVo> selectEndOfYearStandard(String evuStdId);
 
 }

@@ -15,6 +15,42 @@
 
     </select>
 
+    <select id="selectEndOfYearStandard" resultType="EvuTotStandVo" parameterType="String" fetchSize="100">
+        SELECT
+            EE.EVU_STD_ID,
+            U.POST_CD,
+            U.EMP_ID,
+            U.EMP_NM,
+            U.POST_NM,
+            EC.CDP_NM,
+            EC.CDP_CD,
+            ECC.PRIORITY,
+            ECD.CUSTOM_YN,
+            ECC1.CATE_NM,
+            ECC2.CATE_NM,
+            ECD.COMP_TITLE,
+            ECD.DEFINE_CD,
+            ECO.MNG1_SCORE_1Q,
+            ECO.MNG1_AF_SCORE_1Q,
+            ECO.MNG1_SCORE_2Q ,
+            ECO.MNG1_AF_SCORE_2Q ,
+            ECO.MNG1_SCORE_3Q,
+            ECO.MNG1_AF_SCORE_3Q
+        FROM EVU_EMP EE
+            INNER JOIN [USER] U ON (U.EMP_ID = EE.EVU_EMP_ID AND U.POST_CD NOT IN('GB1','GB2','GB3','GB4','GB5','GBS1'))
+            LEFT JOIN EVU_EMP_CDP EEC ON (EEC.EVU_EMP_NO = EE.EVU_EMP_NO AND EE.CUR_STEP_CD = EEC.STEP_CD AND EEC.STEP_CD = 'D1')
+            LEFT JOIN EVU_CDP EC  ON (EEC.CDP_CD = EC.CDP_CD AND EC.EVU_STD_ID = EE.EVU_STD_ID)
+            LEFT JOIN EVU_COMP ECO ON (ECO.EVU_EMP_NO = EEC.EVU_EMP_NO AND ECO.EVU_STD_ID = EEC.EVU_STD_ID)
+            LEFT JOIN EVU_CDP_COMP ECC ON (ECC.EVU_CDP_COMP_ID = ECO.EVU_CDP_COMP_ID AND ECC.EVU_STD_ID = EEC.EVU_STD_ID )
+            LEFT JOIN EVU_COMP_DEFINE ECD ON (ECD.DEFINE_CD = ECC.DEFINE_CD)
+            LEFT JOIN EVU_COMP_CATE ECC1 ON (ECC1.CATE_CD = ECD.CATE_CD1)
+            LEFT JOIN EVU_COMP_CATE ECC2 ON (ECC2.CATE_CD = ECD.CATE_CD2)
+            LEFT JOIN EVU_COMP_CATE ECC3 ON (ECC3.CATE_CD = ECD.CATE_CD3)
+        WHERE EEC.EVU_STD_ID = #{evuStdId}
+        ORDER BY U.EMP_ID;
+    </select>
+
+
 
 
 
