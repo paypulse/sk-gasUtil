@@ -3,11 +3,11 @@ package com.example.skgasutils.excelDownload.downloadVo;
 
 import com.example.skgasutils.Utils.Convert;
 import lombok.*;
+import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
-
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -15,8 +15,11 @@ import org.springframework.util.StringUtils;
 public class EvuTotStandVo {
 
     //evuStdId
+    @Nullable
     private String evuStdId;
+    @Nullable
     private String postCd;
+    @Nullable
     private String empId;
     private String empNm;
     private String postNm;
@@ -41,6 +44,7 @@ public class EvuTotStandVo {
      * priority
     * */
     public void setPriority(String priority) {
+
         this.priority = Convert.getPriorityChk(priority);
     }
 
@@ -49,19 +53,18 @@ public class EvuTotStandVo {
      * */
     public void setMng1Score1q(String mng1Score1q) {
 
-        String mng1Score = mng1Score1q;
-
-        if(mng1Score.equals("null")){
-            this.mng1Score1q = "test";
-        }else{
-            this.mng1Score1q = Convert.getTotResult(mng1Score1q);
+        if(mng1Score1q.equals(null)){
+            System.out.println("check the null ");
         }
 
 
+       this.mng1Score1q = mng1Score1q;
     }
     /**
      * TDS1 1차  변동
      * **/
+
+
 
 
 

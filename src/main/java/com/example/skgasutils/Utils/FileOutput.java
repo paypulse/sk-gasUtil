@@ -37,6 +37,7 @@ public class FileOutput {
         response.setContentType("application/vsd.ms-excel");
         response.setHeader("Content-disposition", "attachment; filename=\"" + fileName + "\"");
         xssfWorkbook.write(response.getOutputStream());
+        xssfWorkbook.close();
     }
 
 

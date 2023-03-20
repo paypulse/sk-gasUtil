@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class ExcelDownloadImple  implements ExcelDownloadService {
 
     @Autowired
-    private ExcelDownloadMapper excelDownloadMapper;
+    private  ExcelDownloadMapper excelDownloadMapper;
 
     @Override
     public List<EvuTotDiffVo> selectEvuTotDiff(String evuStdId, String evuType) {

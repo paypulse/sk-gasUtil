@@ -11,6 +11,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 @Slf4j
@@ -34,6 +39,9 @@ public class ExcelDownload {
      * **/
     @GetMapping(value = "/selectTot3Diff")
     public void selectTot3Diff(@RequestParam("evuStdId")String evuStdId, @RequestParam("evuType")String evuType, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        System.out.println("request : "+request);
+        System.out.println("response: "+response);
 
         //list 출력
         List<EvuTotDiffVo> result = excelDownloadService.selectEvuTotDiff(evuStdId, evuType);
@@ -68,44 +76,50 @@ public class ExcelDownload {
     @GetMapping(value = "/selectEndOfYearStandard")
     public void selectEndOfYearStandard(@RequestParam("evuStdId")String evuStdId, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        System.out.println("request : "+request);
+        System.out.println("response: "+response);
+
         //list 출력
         List<EvuTotStandVo> result = excelDownloadService.selectEndOfYearStandard(evuStdId);
 
         //excel 템플릿 양식 위치
-        String formPath ="/excelTemplate/evuTotDiff.xlsx";
+        String formPath ="/excelTemplate/yearsStand.xlsx";
+
 
         //excel file down 명
         String fileName = "yearStand.xlsx";
 
         FileOutput fileOutput = new FileOutput(formPath, request);
 
-        System.out.println("check list : " + result);
+        int rownum=2;
+        int columnIndex = 1;
+        for(EvuTotStandVo vo :result){
+            Row row = fileOutput.xssfSheet.createRow(rownum);
+            row.createCell(1).setCellValue(vo.getEvuStdId());
+            row.createCell(2).setCellValue(vo.getPostCd());
+            row.createCell(3).setCellValue(vo.getEmpId());
+            row.createCell(4).setCellValue(vo.getPostNm());
+            row.createCell(5).setCellValue(vo.getCdpNm());
+            row.createCell(6).setCellValue(vo.getCdpCd());
+            row.createCell(7).setCellValue(vo.getPriority());
+            row.createCell(8).setCellValue(vo.getCustomYn());
+            row.createCell(9).setCellValue(vo.getCateNm1());
+            row.createCell(10).setCellValue(vo.getCompTitle());
+            row.createCell(12).setCellValue(vo.getMng1Score1q());
+            row.createCell(11).setCellValue(vo.getDefineCd());
+            row.createCell(13).setCellValue(vo.getMng1Afscore1q());
+            row.createCell(14).setCellValue(vo.getMng1Score2q());
+            row.createCell(15).setCellValue(vo.getMng1Afscore2q());
+            row.createCell(16).setCellValue(vo.getMng1Score3q());
+            row.createCell(17).setCellValue(vo.getMng1Afscore3q());
 
-        int idx = 2;
-//        for(EvuTotStandVo vo :result){
-//            fileOutput.xssfSheet.getRow(idx).getCell(1).setCellValue(vo.getEvuStdId());
-//            fileOutput.xssfSheet.getRow(idx).getCell(2).setCellValue(vo.getPostCd());
-//            fileOutput.xssfSheet.getRow(idx).getCell(3).setCellValue(vo.getEmpId());
-//            fileOutput.xssfSheet.getRow(idx).getCell(4).setCellValue(vo.getPostNm());
-//            fileOutput.xssfSheet.getRow(idx).getCell(5).setCellValue(vo.getCdpNm());
-//            fileOutput.xssfSheet.getRow(idx).getCell(6).setCellValue(vo.getCdpCd());
-//            fileOutput.xssfSheet.getRow(idx).getCell(7).setCellValue(vo.getPriority());
-//            fileOutput.xssfSheet.getRow(idx).getCell(8).setCellValue(vo.getCustomYn());
-//            fileOutput.xssfSheet.getRow(idx).getCell(9).setCellValue(vo.getCateNm1());
-//            fileOutput.xssfSheet.getRow(idx).getCell(10).setCellValue(vo.getCompTitle());
-//            fileOutput.xssfSheet.getRow(idx).getCell(11).setCellValue(vo.getDefineCd());
-//            fileOutput.xssfSheet.getRow(idx).getCell(12).setCellValue(vo.getMng1Score1q());
-//            fileOutput.xssfSheet.getRow(idx).getCell(13).setCellValue(vo.getMng1Afscore1q());
-//            fileOutput.xssfSheet.getRow(idx).getCell(14).setCellValue(vo.getMng1Score2q());
-//            fileOutput.xssfSheet.getRow(idx).getCell(15).setCellValue(vo.getMng1Afscore2q());
-//            fileOutput.xssfSheet.getRow(idx).getCell(16).setCellValue(vo.getMng1Score3q());
-//            fileOutput.xssfSheet.getRow(idx).getCell(17).setCellValue(vo.getMng1Afscore3q());
-//
-//            idx ++;
-//        }
-//
-//
-//        fileOutput.makeFile(response, fileOutput.xssfSheet, fileName);
+
+            rownum ++;
+        }
+
+
+        fileOutput.makeFile(response, fileOutput.xssfSheet, fileName);
+
 
 
 
