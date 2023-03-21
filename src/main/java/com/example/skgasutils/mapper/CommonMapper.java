@@ -1,9 +1,6 @@
 package com.example.skgasutils.mapper;
 
-import com.example.skgasutils.repository.EvuCdp;
-import com.example.skgasutils.repository.EvuEmp;
-import com.example.skgasutils.repository.EvuEmpCdp;
-import com.example.skgasutils.repository.EvuMng;
+import com.example.skgasutils.repository.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -36,6 +33,7 @@ public interface CommonMapper {
      * EVU_EMP_CDP CHECK
      * */
     public List<EvuEmpCdp> getEvuEmpCdp();
+
 
 
 

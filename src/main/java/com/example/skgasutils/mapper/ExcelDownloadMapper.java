@@ -1,6 +1,7 @@
 package com.example.skgasutils.mapper;
 
 
+import com.example.skgasutils.excelDownload.downloadVo.EvuEmpMngVo;
 import com.example.skgasutils.excelDownload.downloadVo.EvuTotDiffVo;
 import com.example.skgasutils.excelDownload.downloadVo.EvuTotStandVo;
 import org.apache.ibatis.annotations.Mapper;
@@ -22,6 +23,13 @@ public interface ExcelDownloadMapper {
      * 2. 연말 평가 기준 엑셀 다운로드
      * */
     List<EvuTotStandVo> selectEndOfYearStandard(String evuStdId);
+
+
+    /**
+     * 3. 피평가자 정보 데이터 추출
+     * */
+    List<EvuEmpMngVo> selectEvuEmpInfoList(String evuStdId);
+
 
 
 

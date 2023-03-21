@@ -15,11 +15,8 @@ import org.springframework.util.StringUtils;
 public class EvuTotStandVo {
 
     //evuStdId
-    @Nullable
     private String evuStdId;
-    @Nullable
     private String postCd;
-    @Nullable
     private String empId;
     private String empNm;
     private String postNm;
@@ -44,7 +41,6 @@ public class EvuTotStandVo {
      * priority
     * */
     public void setPriority(String priority) {
-
         this.priority = Convert.getPriorityChk(priority);
     }
 
@@ -52,22 +48,41 @@ public class EvuTotStandVo {
      * TDS1  1차 평가
      * */
     public void setMng1Score1q(String mng1Score1q) {
-
-        if(mng1Score1q.equals(null)){
-            System.out.println("check the null ");
-        }
-
-
-       this.mng1Score1q = mng1Score1q;
+       this.mng1Score1q = Convert.getGrdShort(mng1Score1q);
     }
     /**
      * TDS1 1차  변동
      * **/
+    public void setMng1Afscore1q(String mng1Afscore1q) {
+        this.mng1Afscore1q = Convert.getAFgrd(mng1Afscore1q);
+    }
 
 
+    /**
+     * TDS2 1차 평가
+     * **/
+    public void setMng1Score2q(String mng1Score2q) {
+        this.mng1Score2q = Convert.getGrdShort(mng1Score2q);
+    }
 
+    /**
+     * TDS2 1차 변동
+     * **/
+    public void setMng1Afscore2q(String mng1Afscore2q) {
+        this.mng1Afscore2q = Convert.getAFgrd(mng1Afscore2q);
+    }
 
+    /**
+     * TDS3 1차 평가
+     * **/
+    public void setMng1Score3q(String mng1Score3q) {
+        this.mng1Score3q = Convert.getGrdShort(mng1Score3q);
+    }
 
-
-
+    /**
+     * TDS3 1차 변동
+     * **/
+    public void setMng1Afscore3q(String mng1Afscore3q) {
+        this.mng1Afscore3q = Convert.getAFgrd(mng1Afscore3q);
+    }
 }

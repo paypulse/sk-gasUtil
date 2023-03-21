@@ -4,6 +4,7 @@ package com.example.skgasutils.excelDownload;
 import com.example.skgasutils.Utils.CommonRes;
 import com.example.skgasutils.Utils.FileOutput;
 import com.example.skgasutils.excelDownload.Service.ExcelDownloadService;
+import com.example.skgasutils.excelDownload.downloadVo.EvuEmpMngVo;
 import com.example.skgasutils.excelDownload.downloadVo.EvuTotDiffVo;
 import com.example.skgasutils.excelDownload.downloadVo.EvuTotStandVo;
 import jakarta.servlet.http.HttpServlet;
@@ -40,9 +41,6 @@ public class ExcelDownload {
     @GetMapping(value = "/selectTot3Diff")
     public void selectTot3Diff(@RequestParam("evuStdId")String evuStdId, @RequestParam("evuType")String evuType, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        System.out.println("request : "+request);
-        System.out.println("response: "+response);
-
         //list 출력
         List<EvuTotDiffVo> result = excelDownloadService.selectEvuTotDiff(evuStdId, evuType);
 
@@ -71,23 +69,19 @@ public class ExcelDownload {
 
 
     /**
-     * 2. 연말 평가 기준 엑셀 다운로드
+     * 2. (2022년 이후) 연말 평가 기준 엑셀 다운로드
      * */
     @GetMapping(value = "/selectEndOfYearStandard")
     public void selectEndOfYearStandard(@RequestParam("evuStdId")String evuStdId, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        System.out.println("request : "+request);
-        System.out.println("response: "+response);
 
         //list 출력
         List<EvuTotStandVo> result = excelDownloadService.selectEndOfYearStandard(evuStdId);
 
         //excel 템플릿 양식 위치
-        String formPath ="/excelTemplate/yearsStand.xlsx";
-
+        String formPath ="/excelTemplate/indiviaul_capability.xlsx";
 
         //excel file down 명
-        String fileName = "yearStand.xlsx";
+        String fileName = "indivisual_capability.xlsx";
 
         FileOutput fileOutput = new FileOutput(formPath, request);
 
@@ -95,32 +89,75 @@ public class ExcelDownload {
         int columnIndex = 1;
         for(EvuTotStandVo vo :result){
             Row row = fileOutput.xssfSheet.createRow(rownum);
-            row.createCell(1).setCellValue(vo.getEvuStdId());
-            row.createCell(2).setCellValue(vo.getPostCd());
-            row.createCell(3).setCellValue(vo.getEmpId());
-            row.createCell(4).setCellValue(vo.getPostNm());
-            row.createCell(5).setCellValue(vo.getCdpNm());
-            row.createCell(6).setCellValue(vo.getCdpCd());
-            row.createCell(7).setCellValue(vo.getPriority());
-            row.createCell(8).setCellValue(vo.getCustomYn());
-            row.createCell(9).setCellValue(vo.getCateNm1());
-            row.createCell(10).setCellValue(vo.getCompTitle());
-            row.createCell(12).setCellValue(vo.getMng1Score1q());
-            row.createCell(11).setCellValue(vo.getDefineCd());
-            row.createCell(13).setCellValue(vo.getMng1Afscore1q());
-            row.createCell(14).setCellValue(vo.getMng1Score2q());
-            row.createCell(15).setCellValue(vo.getMng1Afscore2q());
-            row.createCell(16).setCellValue(vo.getMng1Score3q());
-            row.createCell(17).setCellValue(vo.getMng1Afscore3q());
+            row.createCell(1).setCellValue(vo.getEmpNm());
+            row.createCell(2).setCellValue(vo.getEmpId());
+            row.createCell(3).setCellValue(vo.getPostNm());
+            row.createCell(4).setCellValue(vo.getCdpNm());
+            row.createCell(5).setCellValue(vo.getCateNm1());
+            row.createCell(6).setCellValue(vo.getCateNm2());
+            row.createCell(7).setCellValue(vo.getCompTitle());
+            row.createCell(8).setCellValue(vo.getDefineCd());
+            row.createCell(9).setCellValue(vo.getCustomYn());
+            row.createCell(10).setCellValue(vo.getPriority());
+            row.createCell(11).setCellValue(vo.getMng1Score1q());
+            row.createCell(12).setCellValue(vo.getMng1Afscore1q());
+            row.createCell(13).setCellValue(vo.getMng1Score2q());
+            row.createCell(14).setCellValue(vo.getMng1Afscore2q());
+            row.createCell(15).setCellValue(vo.getMng1Score3q());
+            row.createCell(16).setCellValue(vo.getMng1Afscore3q());
 
 
             rownum ++;
         }
 
+        fileOutput.makeFile(response, fileOutput.xssfSheet, fileName);
+
+    }
+
+
+
+    /**
+     * 피평가자 정보 데이터 추출
+     * */
+    @GetMapping(value = "/selectEvuEmpInfoList")
+    public void selectEvuEmpInfoList(@RequestParam("evuStdId")String evuStdId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        List<EvuEmpMngVo>  result =  excelDownloadService.selectEvuEmpInfoList(evuStdId);
+
+        //excel 템플릿 양식 위치
+        String formPath ="/excelTemplate/empInfoList.xlsx";
+
+        //excel file down 명
+        String fileName = "empInfoList.xlsx";
+
+        FileOutput fileOutput = new FileOutput(formPath, request);
+
+        int rownum=2;
+        int columnIndex = 1;
+        for(EvuEmpMngVo vo :result){
+            Row row = fileOutput.xssfSheet.createRow(rownum);
+            row.createCell(1).setCellValue(vo.getEmpId());
+            row.createCell(2).setCellValue(vo.getEmpNm());
+            row.createCell(3).setCellValue(vo.getPostNm());
+            row.createCell(4).setCellValue(vo.getJgNm());
+            row.createCell(5).setCellValue(vo.getOrgNm());
+            row.createCell(6).setCellValue(vo.getEvu2Yn());
+            row.createCell(7).setCellValue(vo.getEvuMng1());
+            row.createCell(8).setCellValue(vo.getEvuMng2());
+            row.createCell(9).setCellValue(vo.getEvuMng3());
+
+            rownum ++;
+        }
 
         fileOutput.makeFile(response, fileOutput.xssfSheet, fileName);
 
+    }
 
+
+    /**
+     * 평가 결과  history
+     * */
+    @GetMapping(value="/selectResultYear")
+    public void selectResultYear( HttpServletRequest request, HttpServletResponse response){
 
 
 
@@ -128,17 +165,6 @@ public class ExcelDownload {
 
 
 
-
-
-
-
-
-
-    /**
-     * 2022 개인 역량 평가 엑셀 다운로드
-     * */
-
-    
 
 
 }

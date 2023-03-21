@@ -1,14 +1,21 @@
 package com.example.skgasutils.Utils;
 
 
+import com.example.skgasutils.mapper.CommonMapper;
+import com.example.skgasutils.repository.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
 public class Convert {
+
+
+
 
     /**
      * 역량 평가 등급 정의
@@ -34,28 +41,6 @@ public class Convert {
     }
 
     /**
-     * TDS 평가 결과
-     * **/
-    public static String getTotResult(String score){
-        if(score==""){
-            return "-";
-        }else{
-            return "score";
-        }
-
-//        String scoreText = COMP_NEW_GRD.get(score);
-//        System.out.println("scoreText :" + scoreText);
-//        if(scoreText.length()>0){
-//            return scoreText;
-//        }else{
-//            return "-";
-//        }
-    }
-
-
-
-
-    /**
      * 역량 평가 변동 결과
      * */
     private static final Map<Integer, String> COMP_NEW_AF_GRD;
@@ -67,6 +52,9 @@ public class Convert {
         COMP_NEW_AF_GRD.put(3, "개선");
     }
 
+    public static String getAFgrd(String grd){
+        return COMP_NEW_AF_GRD.get(Integer.parseInt(grd));
+    }
 
 
     /**
@@ -83,13 +71,14 @@ public class Convert {
     }
 
 
-
-
-
-
-
-
-
+    /**
+     * 피평가자의 평가자
+     * **/
+//    public static String setMngNm(String empId){
+//        User mng = commonMapper.getEmpList(empId);
+//        String result = empId + "/" + mng.getEmpNm();
+//        return result;
+//    }
 
 
 

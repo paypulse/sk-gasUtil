@@ -26,8 +26,8 @@
             EC.CDP_CD,
             ECC.PRIORITY,
             ECD.CUSTOM_YN,
-            ECC1.CATE_NM,
-            ECC2.CATE_NM,
+            ECC1.CATE_NM as cateNm1,
+            ECC2.CATE_NM as cateNm2,
             ECD.COMP_TITLE,
             ECD.DEFINE_CD,
             ECO.MNG1_SCORE_1Q,
@@ -49,6 +49,33 @@
         WHERE EEC.EVU_STD_ID = #{evuStdId}
         ORDER BY U.EMP_ID;
     </select>
+
+    <select id="selectEvuEmpInfoList" resultType="EvuEmpMngVo" parameterType="String">
+        SELECT
+            U.EMP_ID,
+            U.EMP_NM,
+            U.POST_NM,
+            U.JG_NM,
+            U.ORG_NM,
+            EE.EVU2_YN,
+            CONCAT(M1.EVU_MNG_ID , '/', (SELECT u.EMP_NM  FROM [USER] u where u.EMP_ID = M1.EVU_MNG_ID)) as evuMng1,
+            CONCAT(M2.EVU_MNG_ID,'/',(SELECT u.EMP_NM  FROM [USER] u where u.EMP_ID = M2.EVU_MNG_ID)) as evuMng2,
+            CONCAT(M3.EVU_MNG_ID , '/', (SELECT u.EMP_NM  FROM [USER] u where u.EMP_ID = M3.EVU_MNG_ID)) as evuMng3
+        FROM EVU_EMP EE
+                 INNER JOIN [USER] U ON (EE.EVU_EMP_ID = U.EMP_ID)
+            LEFT JOIN EVU_MNG M1 ON (EE.EVU_EMP_NO = M1.EVU_EMP_NO AND M1.CHASU = 1)
+            LEFT JOIN EVU_MNG M2 ON (EE.EVU_EMP_NO = M2.EVU_EMP_NO AND M2.CHASU = 2)
+            LEFT JOIN EVU_MNG M3 ON (EE.EVU_EMP_NO = M3.EVU_EMP_NO AND M3.CHASU = 3)
+        WHERE EE.EVU_STD_ID =#{evuStdId} AND M1.CHASU IS NOT NULL
+        ORDER BY U.EMP_ID
+    </select>
+
+
+
+
+
+
+
 
 
 

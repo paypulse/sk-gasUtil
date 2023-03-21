@@ -1,5 +1,6 @@
 package com.example.skgasutils.excelDownload.Service;
 
+import com.example.skgasutils.excelDownload.downloadVo.EvuEmpMngVo;
 import com.example.skgasutils.excelDownload.downloadVo.EvuTotDiffVo;
 import com.example.skgasutils.excelDownload.downloadVo.EvuTotStandVo;
 
@@ -17,5 +18,10 @@ public interface ExcelDownloadService {
      *  연말 평가 기준 엑셀 다운로드
      * */
     public List<EvuTotStandVo> selectEndOfYearStandard(String evuStdId);
+
+    /**
+     * 피평가자 정보 데이터 추출
+     * **/
+    public List<EvuEmpMngVo> selectEvuEmpInfoList(String evuStdId);
 
 }
