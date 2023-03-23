@@ -117,6 +117,8 @@ public class ExcelUploadImple implements ExcelUploadService {
 
         System.out.println("check mng3 : " + mng3);
         System.out.println("check mng3 size : " + mng3.size());
+        System.out.println("check mng1 : " + mng1);
+        System.out.println("check mng1 size : " + mng1.size());
 
         if(mng1.size() >0){
             resultMng1 = excelUpoadMaper.insertEvuMng1(mng1);
@@ -136,10 +138,11 @@ public class ExcelUploadImple implements ExcelUploadService {
      * */
     @Override
     public int insertEmpCdp(Sheet worksheet, String evuStdId) {
-
+        //cdpNm  -> cdpCd를 찾아 내기위해
         List<EvuCdp> cdpList = commonMapper.getEvuCdp(evuStdId);
+
         List<EvuEmp> empList = commonMapper.getEvuEmpList(evuStdId);
-        List<EvuEmpCdp> empCdpList = commonMapper.getEvuEmpCdp();
+        List<EvuEmpCdp> empCdpList = commonMapper.getEmpCdpList(evuStdId);
 
 
         List<ExcelEmpVo> excelList = new ArrayList<>();
@@ -179,28 +182,8 @@ public class ExcelUploadImple implements ExcelUploadService {
             excelList.add(data);
           }
 
-        //중복을 허용하지 말아야 하는데 , evu_emp_no, step_cd, evu_std_id
-        insertEmpCdpList = excelList.stream()
-                .filter(n -> empCdpList.stream().noneMatch( a ->{
-                    return (a.getEvuEmpNo() == Integer.parseInt(n.getEvuEmpNo()) );
-                }))
-                .filter(n -> empCdpList.stream().noneMatch( b ->{
-                    return b.getStepCd().equals(n.getStepCd());
-                }))
-                .filter(n -> empCdpList.stream().noneMatch( c ->{
-                    return c.getEvuStdId().equals(evuStdId);
-                }))
-                .collect(Collectors.toList());
 
-        System.out.println(insertEmpCdpList.size());
-
-
-
-//        if(insertEmpCdpList.size() > 1){
-//
-//            resultCdpMapping = excelUpoadMaper.insertCdpCd(insertEmpCdpList);
-//        }
-
+        resultCdpMapping = excelUpoadMaper.insertCdpCd(excelList);
 
         return resultCdpMapping;
     }

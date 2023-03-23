@@ -70,7 +70,27 @@
         ORDER BY U.EMP_ID
     </select>
 
+    <select id="selectTds1PersonInfo" resultType="EvuTds1Vo" parameterType="String">
 
+        select
+            ee.EVU_STD_ID,
+            u.EMP_NM ,
+            ee.EVU_EMP_NO,
+            ee.EVU_EMP_ID,
+            u.POST_NM,
+            u.JOB_NM,
+            es2.EVU_STAT_CD,
+            et.TASK_NM,
+            et.WT_SCORE,
+            et.EXEC_PLAN,
+            et.MNG1_ACHV_TEXT_1Q
+        from EVU_EMP ee
+                 inner join [USER] u on ee.EVU_EMP_ID = u.EMP_ID
+            left join EVU_TASK et on et.EVU_EMP_NO = ee.EVU_EMP_NO and et.EVU_STD_ID  = ee.EVU_STD_ID
+            left join EVU_STEP es on es.EVU_STEP_CD = ee.CUR_STEP_CD  and es.EVU_STD_ID = ee.EVU_STD_ID
+            left join EVU_STAT es2 on es2.EVU_STEP_CD = ee.CUR_STEP_CD AND es2.EVU_STAT_CD  = ee.EVU_STAT_CD
+        where ee.EVU_STD_ID = #{evuStdId}
+    </select>
 
 
 

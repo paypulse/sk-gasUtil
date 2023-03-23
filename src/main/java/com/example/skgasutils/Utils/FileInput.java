@@ -115,11 +115,9 @@ public class FileInput {
                         return c.getEvuEmpNo().equals(n.getEvuEmpNo());
                     })).collect(Collectors.toList());
         }
-
-
         return insertMngList;
-
     }
+
 
 
 

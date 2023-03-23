@@ -25,5 +25,6 @@ public class EvuMng implements Serializable {
     private String modYmdhms;
     private String mngStatCd;
     private String temporaryYn;
+    private String evuMngNm;
 
 }

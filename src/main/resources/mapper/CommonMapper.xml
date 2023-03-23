@@ -24,6 +24,30 @@
         from EVU_EMP_CDP
     </select>
 
+    <select id="getEmpCdpList" resultType="EvuEmpCdp" parameterType="String">
+        select *
+        from evu_emp ee
+        inner join EVU_EMP_CDP eec on (ee.EVU_EMP_NO = eec.EVU_EMP_NO)
+        where ee.EVU_STD_ID=#{evuStdId}
+    </select>
+
+    <!-- 지정 평가자 가져오기 -->
+    <select id="getMngList" resultType="EvuMng">
+        SELECT
+            A.EVU_MNG_SEQ,
+            A.EVU_MNG_ID,
+            A.EVU_EMP_NO,
+            A.CHASU,
+            B.EMP_NM AS evuMngNm
+        FROM EVU_MNG A
+                 LEFT JOIN [USER] B
+        ON(A.EVU_MNG_ID = B.EMP_ID)
+        WHERE chasu = 1
+        ORDER BY A.CHASU
+    </select>
+
+
+
 
 
 

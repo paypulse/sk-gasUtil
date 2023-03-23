@@ -1,6 +1,7 @@
 package com.example.skgasutils.excelDownload.Service;
 
 import com.example.skgasutils.excelDownload.downloadVo.EvuEmpMngVo;
+import com.example.skgasutils.excelDownload.downloadVo.EvuTds1Vo;
 import com.example.skgasutils.excelDownload.downloadVo.EvuTotDiffVo;
 import com.example.skgasutils.excelDownload.downloadVo.EvuTotStandVo;
 
@@ -23,5 +24,13 @@ public interface ExcelDownloadService {
      * 피평가자 정보 데이터 추출
      * **/
     public List<EvuEmpMngVo> selectEvuEmpInfoList(String evuStdId);
+
+
+    /**
+     * 목표 수립 관련 데이터 한 눈에 보기
+     * */
+    public List<EvuTds1Vo> selectTds1PersonInfoList(String evuStdId);
+
+
 
 }

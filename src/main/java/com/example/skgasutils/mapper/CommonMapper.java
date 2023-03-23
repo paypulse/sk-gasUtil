@@ -35,6 +35,17 @@ public interface CommonMapper {
     public List<EvuEmpCdp> getEvuEmpCdp();
 
 
+    /**
+     * EVU_EMP_CDP 에서 해당 cdp가 있는지 check
+     * */
+    public List<EvuEmpCdp> getEmpCdpList(String evuStdId);
+
+
+    /**
+     * 지정 평가자 가져오기
+     * **/
+    public List<EvuMng> getMngList();
+
 
 
 

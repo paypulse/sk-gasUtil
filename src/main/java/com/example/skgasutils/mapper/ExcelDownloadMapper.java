@@ -2,6 +2,7 @@ package com.example.skgasutils.mapper;
 
 
 import com.example.skgasutils.excelDownload.downloadVo.EvuEmpMngVo;
+import com.example.skgasutils.excelDownload.downloadVo.EvuTds1Vo;
 import com.example.skgasutils.excelDownload.downloadVo.EvuTotDiffVo;
 import com.example.skgasutils.excelDownload.downloadVo.EvuTotStandVo;
 import org.apache.ibatis.annotations.Mapper;
@@ -29,6 +30,12 @@ public interface ExcelDownloadMapper {
      * 3. 피평가자 정보 데이터 추출
      * */
     List<EvuEmpMngVo> selectEvuEmpInfoList(String evuStdId);
+
+
+    /**
+     * 목표 수립관련 데이터 한 눈에 보기
+     * */
+    List<EvuTds1Vo> selectTds1PersonInfo(String evuStdId);
 
 
 

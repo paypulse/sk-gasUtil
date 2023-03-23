@@ -43,7 +43,7 @@ public class ExcelUpload {
     /**
      * Excel upload
      * **/
-    @Operation(summary = "엑셀 업로드", description = "엑셀 업로드")
+    @Operation(summary = "엑셀 업로드 데이터 테스트", description = "엑셀 업로드 테스트 ")
     @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CommonRes> uploadExcel(@RequestParam("file")MultipartFile file,@RequestParam String evuStdId) throws TikaException, IOException {
 
@@ -89,7 +89,7 @@ public class ExcelUpload {
     /**
      * Excel upload and Emp save
      * **/
-    @Operation(summary = "Emp 업로드", description = "엑셀로 피평가자 업로드")
+    @Operation(summary = "피평가자 업로드", description = "피평가자 업로드")
     @PostMapping(value = "/uploadEmpSave" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CommonRes> uploadEmpSave(@RequestParam(value="file", required = false)MultipartFile file,@RequestParam String evuStdId) throws IOException {
 
@@ -155,6 +155,7 @@ public class ExcelUpload {
     /**
      * 피평가자 <-> 평가자 맵핑
      * **/
+    @Operation(summary = "평가자 업로드", description = "피평가자와 매칭 된 평가자 업로드")
     @PostMapping(value = "/uploadMngEmpSave", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CommonRes> uploadMngEmpSave(@RequestParam(value="file", required = false)MultipartFile file,@RequestParam String evuStdId) throws IOException {
 
@@ -221,6 +222,7 @@ public class ExcelUpload {
     /**
      * 피 평가자 CDP 맵핑
      * */
+    @Operation(summary = "피평가자 cdpcd(역량 코드) 업로드 ", description = "피평가자들의 역량 코드 매칭")
     @PostMapping(value = "/uploadCdpEmpSave", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CommonRes> uploadCDPEmpSave(@RequestParam(value="file", required = false)MultipartFile file,@RequestParam String evuStdId) throws IOException {
 
