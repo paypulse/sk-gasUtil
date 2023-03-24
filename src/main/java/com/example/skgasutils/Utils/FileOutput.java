@@ -33,8 +33,8 @@ public class FileOutput {
             String path = request.getServletContext().getRealPath(formPath);
             file =  new FileInputStream(path);
             xssfWorkbook = new XSSFWorkbook(file);
-            excelStyle(xssfWorkbook);
             xssfSheet = xssfWorkbook.getSheetAt(0);
+
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
@@ -55,19 +55,16 @@ public class FileOutput {
     /**
      * poi 엑셀 스타일
      * */
-    public void excelStyle(XSSFWorkbook workbook){
-
+    public void excelStyle(XSSFWorkbook workbook, Row row, int[] cellNum){
        //셀 스타일 및 트 설정
        CellStyle  style= workbook.createCellStyle();
        style.setWrapText(true);
        //가운데 정렬
        style.setVerticalAlignment(VerticalAlignment.CENTER);
-       //선 그리기
-       style.setBorderLeft(BorderStyle.THICK);
-       style.setBorderRight(BorderStyle.THICK);
-       style.setBorderTop(BorderStyle.THICK);
-       style.setBorderBottom(BorderStyle.THICK);
 
+       for(int n:cellNum){
+           row.getCell(n).setCellStyle(style);
+       }
     }
 
 

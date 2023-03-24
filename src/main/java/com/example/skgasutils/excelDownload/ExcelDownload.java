@@ -15,8 +15,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,15 +170,13 @@ public class ExcelDownload {
     public void selectTds1PersonInfo(@RequestParam("evuStdId")String evuStdId, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         List<EvuTds1Vo>  result = excelDownloadService.selectTds1PersonInfoList(evuStdId);
-
-
         //excel 템플릿 양식 위치
         String formPath ="/excelTemplate/tds1.xlsx";
-
         //excel file down 명
         String fileName = "tds1.xlsx";
-
         FileOutput fileOutput = new FileOutput(formPath, request);
+        //style 적용 cell
+        int[] cellNum;
 
         int rownum=3;
         int columnIndex = 1;
@@ -193,17 +195,17 @@ public class ExcelDownload {
             row.createCell(11).setCellValue(vo.getMng1AchvText1Q());
             row.createCell(12).setCellValue(vo.getEmpMng());
 
+            //cell style을 적용할 cell 번호
+            cellNum = new int[]{10, 11, 12};
+            fileOutput.excelStyle(fileOutput.xssfWorkbook, row, cellNum);
             rownum ++;
         }
-
+        XSSFCellStyle cs =fileOutput.xssfWorkbook.createCellStyle();
+        cs.setWrapText(true);
         fileOutput.makeFile(response, fileOutput.xssfSheet, fileName);
 
-
-
-
-
-
     }
+
 
 
 

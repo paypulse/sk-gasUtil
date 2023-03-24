@@ -58,20 +58,13 @@ public class ExcelDownloadImple  implements ExcelDownloadService {
         List<EvuTds1Vo> list = excelDownloadMapper.selectTds1PersonInfo(evuStdId);
         List<EvuMng> mng = commonMapper.getMngList();
 
-        List<EvuTds1Vo> result = new ArrayList<>();
-        List<EvuMng> resultMng = new ArrayList<>();
-
-//        resultMng = mng.stream().filter(o -> list.stream().anyMatch( a->{
-//            return o.getEvuEmpNo().equals(a.getEvuEmpNo());
-//        }) ).collect(Collectors.toList());
-//
-//        int index=0;
-//        for(EvuTds1Vo vo :list){
-//            String mngStr = resultMng.get(index).getEvuMngNm() +" / "+resultMng.get(index).getEvuMngId();
-//            vo.setEmpMng(mngStr);
-//            index++;
-//        }
-
+        for(EvuTds1Vo vo :list){
+            for(EvuMng vo1: mng){
+                if(vo.getEvuEmpNo().equals(vo1.getEvuEmpNo())){
+                    vo.setEmpMng(vo1.getEvuMngNm());
+                }
+            }
+        }
 
         return list;
     }
