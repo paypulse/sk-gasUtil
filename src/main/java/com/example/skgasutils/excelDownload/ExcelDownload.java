@@ -200,8 +200,7 @@ public class ExcelDownload {
             fileOutput.excelStyle(fileOutput.xssfWorkbook, row, cellNum);
             rownum ++;
         }
-        XSSFCellStyle cs =fileOutput.xssfWorkbook.createCellStyle();
-        cs.setWrapText(true);
+
         fileOutput.makeFile(response, fileOutput.xssfSheet, fileName);
 
     }

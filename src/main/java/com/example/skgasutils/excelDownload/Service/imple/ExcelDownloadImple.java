@@ -61,7 +61,7 @@ public class ExcelDownloadImple  implements ExcelDownloadService {
         for(EvuTds1Vo vo :list){
             for(EvuMng vo1: mng){
                 if(vo.getEvuEmpNo().equals(vo1.getEvuEmpNo())){
-                    vo.setEmpMng(vo1.getEvuMngNm());
+                    vo.setEmpMng(vo1.getEvuMngNm()+"/"+vo1.getEvuMngId());
                 }
             }
         }
