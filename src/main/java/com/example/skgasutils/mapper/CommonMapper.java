@@ -46,6 +46,10 @@ public interface CommonMapper {
      * **/
     public List<EvuMng> getMngList();
 
+    /**
+     * 인사DB == User 테이블에 있는지 확인 하기
+     * */
+
 
 
 
