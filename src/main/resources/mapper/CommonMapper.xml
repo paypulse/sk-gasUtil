@@ -46,8 +46,12 @@
         ORDER BY A.CHASU
     </select>
 
-
-
+    <!-- CDP 직무 별 역량 평가 항목 관리 -->
+    <select id="getEvuCdpComp" parameterType="String" resultType="EvuCdpComp">
+        SELECT *
+        FROM EVU_CDP_COMP
+        WHERE EVU_STD_ID = #{evuStdId}
+    </select>
 
 
 
