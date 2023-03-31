@@ -39,6 +39,8 @@ public class EvuCdpUtilImple implements EvuCdpUtilService {
         List<EvuCdpVo> insertCdp = new ArrayList<>();
         EvuCdpVo vo = new EvuCdpVo();
 
+        int result =0;
+
         //cdp 직무
         List<EvuCdp> cdp = commonMapper.getEvuCdp(lastEvuStdId);
         cdp.stream().forEach(n ->{
@@ -75,12 +77,10 @@ public class EvuCdpUtilImple implements EvuCdpUtilService {
         });
 
 
-        //cdp insert
+        //insert
+        result = evuCdppUtilMapper.insertEvuCdp(insertCdp);
+        result += evuCdppUtilMapper.insertEvuCdpComp(insertCdp);
 
-        //cdp comp insert
-
-
-
-        return 0;
+        return result;
     }
 }
