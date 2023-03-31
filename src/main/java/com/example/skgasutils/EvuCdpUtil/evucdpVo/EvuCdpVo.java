@@ -10,7 +10,13 @@ import lombok.*;
 @ToString
 @Builder
 public class EvuCdpVo {
-    private String evuStdId;
+
+    //이전년도 evuStdId
+    private String lastEvuStdId;
+    //현재 년도 evuStdId
+    private String nowEvuStdId;
+
+    private String evuCdpCompId;
 
     // evu_cdp_cd 와 cdp_cd 동일
     private String cdpCd;
@@ -25,9 +31,9 @@ public class EvuCdpVo {
 
     private String actDesc;
     private int score;
-    private String priority;
+    private int priority;
     private int dpOrder;
-    private String evuCompDefineSeq;
+    private int evuCompDefineSeq;
     private String defineCd;
     private String visible;
 

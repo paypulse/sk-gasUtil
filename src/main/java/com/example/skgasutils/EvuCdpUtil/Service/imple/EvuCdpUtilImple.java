@@ -37,36 +37,47 @@ public class EvuCdpUtilImple implements EvuCdpUtilService {
         CommonUtil util = new CommonUtil();
         String date = util.nowDate1("yyyy-MM-dd HH:mm:ss");
         List<EvuCdpVo> insertCdp = new ArrayList<>();
-        List<EvuCdpVo> insertCdpComp = new ArrayList<>();
+        EvuCdpVo vo = new EvuCdpVo();
 
         //cdp 직무
         List<EvuCdp> cdp = commonMapper.getEvuCdp(lastEvuStdId);
-        //cdp안에서 바꿀 때
         cdp.stream().forEach(n ->{
-            n.setEvuStdId("202301");
-            n.setInsYmdhms(date);
-            n.setInsUserId("00812");
+            vo.setNowEvuStdId("202301");
+            vo.setLastEvuStdId("202201");
+            vo.setCdpCd(n.getCdpCd());
+            vo.setCdpNm(n.getCdpNm());
+            vo.setCdpType(n.getCdpType());
+            vo.setCdpMission(n.getCdpMission());
+            vo.setInsUserId("00812");
+            vo.setInsYmdhms(date);
+            vo.setPostCd(n.getPostCd());
+            insertCdp.add(vo);
         });
-        
-
 
 
         //cdp_comp cdp직무별 역량 평가 항목 관리
         List<EvuCdpComp> cdpComp = commonMapper.getEvuCdpComp(lastEvuStdId);
         //cdpComp 안에서 바꿀때
         cdpComp.stream().forEach(n->{
-            n.setEvuCdpCompId("COM2023"+n.getEvuCdpCompId().substring(8,20));
-            n.setEvuStdId("202301");
-            n.setInsUserId("00812");
-            n.setInsYmdhms(date);
+            vo.setEvuCdpCompId("COM2023"+n.getEvuCdpCompId().substring(8,20));
+            vo.setCateCd1(n.getCateCd1());
+            vo.setCateCd2(n.getCateCd2());
+            vo.setCateCd3(n.getCateCd3());
+            vo.setActDesc(n.getActDesc());
+            vo.setScore(n.getScore());
+            vo.setPriority(n.getPriority());
+            vo.setDpOrder(n.getDpOrder());
+            vo.setEvuCompDefineSeq(n.getEvuCompDefineSeq());
+            vo.setDefineCd(n.getDefineCd());
+            vo.setVisible(n.getVisible());
+
+            insertCdp.add(vo);
         });
 
 
+        //cdp insert
 
-
-
-
-
+        //cdp comp insert
 
 
 
