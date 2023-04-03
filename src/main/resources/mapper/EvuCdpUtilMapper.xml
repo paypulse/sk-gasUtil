@@ -2,5 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.skgasutils.mapper.EvuCdppUtilMapper">
 
+    <!-- cdp직무 -->
+    <insert id="insertEvuCdp" parameterType="EvuCdpVo">
+        INSERT INTO EVU_CDP(EVU_STD_ID, CDP_CD, CDP_NM, CDP_TYPE, CDP_MISSION, INS_USER_ID, INS_YMDHMS, POST_CD)
+        SELECT
+            #{nowEvuStdId},
+            CDP_CD,
+            CDP_NM,
+            CDP_TYPE,
+            CDP_MISSION,
+            #{insUserId} INS_USER_ID,
+            #{insYmdhms} INS_YMDHMS,
+            POST_CD
+        FROM EVU_CDP
+        WHERE EVU_STD_ID = #{lastEvuStdId}
+    </insert>
+
+    <!-- cdp 직무별 역량 평가 항목 관리  -->
+    <insert id="insertEvuCdpComp" parameterType="EvuCdpVo">
+        INSERT INTO EVU_CDP_COMP (EVU_CDP_COMP_ID
+             ,EVU_STD_ID
+             ,EVU_CDP_CD
+             ,POST_CD
+             ,CATE_CD1
+             ,CATE_CD2
+             ,CATE_CD3
+             ,ACT_DESC
+             ,SCORE
+             ,PRIORITY
+             ,DP_ORDER
+             ,EVU_COMP_DEFINE_SEQ
+             ,DEFINE_CD
+             ,VISIBLE
+             ,INS_USER_ID
+             ,INS_YMDHMS)
+        SELECT
+             #{evuCdpCompId} EVU_CDP_COMP_ID
+             ,#{nowEvuStdId} EVU_STD_ID
+             ,EVU_CDP_CD
+             ,POST_CD
+             ,CATE_CD1
+             ,CATE_CD2
+             ,CATE_CD3
+             ,ACT_DESC
+             ,SCORE
+             ,PRIORITY
+             ,DP_ORDER
+             ,EVU_COMP_DEFINE_SEQ
+             ,DEFINE_CD
+             ,VISIBLE
+             ,#{insUserId} INS_USER_ID
+             ,#{insYmdhms} INS_YMDHMS
+        FROM EVU_CDP_COMP
+        WHERE EVU_STD_ID=#{lastEvuStdId};
+    </insert>
 
 </mapper>

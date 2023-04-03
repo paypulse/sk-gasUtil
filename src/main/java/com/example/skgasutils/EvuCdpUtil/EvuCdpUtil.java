@@ -46,9 +46,6 @@ public class EvuCdpUtil {
                         .build());
             }
 
-
-
-
         }catch (Exception e){
 
             return ResponseEntity.ok(CommonRes.builder()
