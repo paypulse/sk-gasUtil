@@ -3,6 +3,8 @@ package com.example.skgasutils.EvuCdpUtil.evucdpVo;
 
 import lombok.*;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -16,7 +18,7 @@ public class EvuCdpVo {
     //현재 년도 evuStdId
     private String nowEvuStdId;
 
-    private String evuCdpCompId;
+    private List<String> evuCdpCompId;
 
     // evu_cdp_cd 와 cdp_cd 동일
     private String cdpCd;

@@ -9,10 +9,10 @@ import java.util.List;
 public interface EvuCdppUtilMapper {
 
     //evu_cdp insert
-    int insertEvuCdp(List<EvuCdpVo> param);
+    int insertEvuCdp(EvuCdpVo param);
 
     //evu_cdp_comp insert
-    int insertEvuCdpComp(List<EvuCdpVo> param);
+    int insertEvuCdpComp(EvuCdpVo param);
 
 
 }

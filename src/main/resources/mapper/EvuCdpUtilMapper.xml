@@ -37,7 +37,7 @@
              ,INS_USER_ID
              ,INS_YMDHMS)
         SELECT
-             #{evuCdpCompId} EVU_CDP_COMP_ID
+             CONCAT('COM2023',SUBSTRING(EVU_CDP_COMP_ID, 8, 20)) EVU_CDP_COMP_ID
              ,#{nowEvuStdId} EVU_STD_ID
              ,EVU_CDP_CD
              ,POST_CD

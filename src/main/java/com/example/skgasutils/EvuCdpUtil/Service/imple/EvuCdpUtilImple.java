@@ -36,44 +36,29 @@ public class EvuCdpUtilImple implements EvuCdpUtilService {
 
         CommonUtil util = new CommonUtil();
         String date = util.nowDate1("yyyy-MM-dd HH:mm:ss");
-        List<EvuCdpVo> insertCdp = new ArrayList<>();
-        List<EvuCdpVo> insertCdpComp = new ArrayList<>();
 
-        EvuCdpVo vo = new EvuCdpVo();
+
+        EvuCdpVo cdpInfo = new EvuCdpVo();
+        List<String> evuCdpCompId = new ArrayList<>();
 
         int result =0;
 
         //cdp 직무
-        List<EvuCdp> cdp = commonMapper.getEvuCdp(lastEvuStdId);
-        System.out.println("cdp count :" + cdp.size());
-        cdp.stream().forEach(n ->{
-            vo.setNowEvuStdId(nowEvuStdId);
-            vo.setLastEvuStdId(lastEvuStdId);
-            vo.setInsUserId("00812");
-            vo.setInsYmdhms(date);
-            insertCdp.add(vo);
-        });
-        System.out.println("check :" + insertCdp);
+        cdpInfo.setNowEvuStdId(nowEvuStdId);
+        cdpInfo.setLastEvuStdId(lastEvuStdId);
+        cdpInfo.setInsUserId("00812");
+        cdpInfo.setInsYmdhms(date);
+
 
         //cdp_comp cdp직무별 역량 평가 항목 관리
         List<EvuCdpComp> cdpComp = commonMapper.getEvuCdpComp(lastEvuStdId);
-        System.out.println("cdpComp size : " + cdpComp.size());
-        //cdpComp 안에서 바꿀때
-        cdpComp.stream().forEach(n->{
-            vo.setEvuCdpCompId("COM2023"+n.getEvuCdpCompId().substring(8,20));
-            vo.setInsUserId("00812");
-            vo.setInsYmdhms(date);
-            insertCdpComp.add(vo);
-        });
-        System.out.println("check1 :" + insertCdpComp);
-     //   System.out.println(insertCdp);
+
+        cdpInfo.setEvuCdpCompId(evuCdpCompId);
 
 
         //insert
-        result = evuCdppUtilMapper.insertEvuCdp(insertCdp);
-        result += evuCdppUtilMapper.insertEvuCdpComp(insertCdpComp);
-
-  //      System.out.println("result : "+ result );
+        result = evuCdppUtilMapper.insertEvuCdp(cdpInfo);
+        result += evuCdppUtilMapper.insertEvuCdpComp(cdpInfo);
 
         return result;
     }
