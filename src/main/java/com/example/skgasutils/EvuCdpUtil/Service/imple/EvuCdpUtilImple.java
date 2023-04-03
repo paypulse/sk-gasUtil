@@ -5,7 +5,6 @@ import com.example.skgasutils.EvuCdpUtil.evucdpVo.EvuCdpVo;
 import com.example.skgasutils.Utils.CommonUtil;
 import com.example.skgasutils.mapper.CommonMapper;
 import com.example.skgasutils.mapper.EvuCdppUtilMapper;
-import com.example.skgasutils.repository.EvuCdp;
 import com.example.skgasutils.repository.EvuCdpComp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,23 +12,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 @Slf4j
 @Service
 public class EvuCdpUtilImple implements EvuCdpUtilService {
 
-
     @Autowired
     private EvuCdppUtilMapper evuCdppUtilMapper;
 
     @Autowired
     private CommonMapper commonMapper;
-
-
 
     @Override
     public int insertEvuCdpCapa(String lastEvuStdId, String nowEvuStdId) {
