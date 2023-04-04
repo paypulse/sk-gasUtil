@@ -53,8 +53,12 @@
         WHERE EVU_STD_ID = #{evuStdId}
     </select>
 
-
-
+    <!-- user 인사db 확인  -->
+    <select id="getUserInfo" parameterType="String" resultType="int">
+        SELECT count(*)
+        FROM USER
+        WHERE EMP_ID = #{empId}
+    </select>
 
 
 

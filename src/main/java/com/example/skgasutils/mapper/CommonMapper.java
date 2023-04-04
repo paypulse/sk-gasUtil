@@ -53,6 +53,10 @@ public interface CommonMapper {
     public List<EvuCdpComp> getEvuCdpComp(String evuStdId);
 
 
+    /**
+     * USER 인사 정보 check
+     * */
+    public int getUserInfo(String empId);
 
 
 

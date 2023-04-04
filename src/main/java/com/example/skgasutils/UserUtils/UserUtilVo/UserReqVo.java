@@ -1,0 +1,44 @@
+package com.example.skgasutils.UserUtils.UserUtilVo;
+
+
+import lombok.*;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class UserReqVo {
+
+    //user 사번
+    private String empId;
+    //사원명 
+    private String empNm;
+    //일련 번호
+    private int seqNo;
+    //조직 ID
+    private String orgId;
+    //조직 명
+    private String orgNm;
+    //직책 코드
+    private String dutyCd;
+    //직책 명
+    private String dutyNm;
+    //직군 명
+    private String jgNm;
+    //직군 ID
+    private String jgId;
+    //직무ID
+    private String jobId;
+    //직무 명
+    private String jobNm;
+    //직위코드
+    private String postCd;
+    //직위명
+    private String postNm;
+    private String bandCd;
+    //직급년차기준일
+    private String gradeStaYmd;
+    private String postAge;
+
+}

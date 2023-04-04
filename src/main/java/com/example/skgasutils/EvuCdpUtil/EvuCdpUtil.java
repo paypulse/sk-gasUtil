@@ -28,8 +28,6 @@ public class EvuCdpUtil {
     @Operation(summary = "이전 년도 기준 동일 역량 등록", description="이전 년도 기준 동일역량 등록시")
     @PostMapping(path = "/evuCapaRegist ")
     public ResponseEntity<CommonRes> uploadCdpCd(@RequestParam String lastEvuStdId, @RequestParam String nowEvuStdId){
-
-
         int rv =0;
         try{
             rv = evuCdpUtilService.insertEvuCdpCapa(lastEvuStdId, nowEvuStdId);
