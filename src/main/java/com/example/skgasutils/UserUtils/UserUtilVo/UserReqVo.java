@@ -52,6 +52,7 @@ public class UserReqVo {
 
     //cdpNm
     private String cdpNm;
+    private String cdpCd;
 
     //직급년차기준일
     private String gradeStaYmd;

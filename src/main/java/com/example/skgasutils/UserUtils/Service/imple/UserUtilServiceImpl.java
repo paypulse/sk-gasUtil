@@ -72,6 +72,9 @@ public class UserUtilServiceImpl implements UserUtilService {
         map.put("cdpNm", vo.getCdpNm());
         int cdpCheck = commonMapper.getEvuCdpCount(map);
 
+
+        //TODO. 제발 commonMapper 정리 좀 하자. 많이 지저분하네, 왜 이렇게 짠거지?
+
         //4. evu_emp_cdp에 있는지 없는지 확인
         //evu_emp_no값
         String evuEmpNo;
