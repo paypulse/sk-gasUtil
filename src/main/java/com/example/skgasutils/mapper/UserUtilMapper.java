@@ -13,6 +13,12 @@ public interface UserUtilMapper {
     int userRegist(UserReqVo vo);
 
 
+    /**
+     * 단권 피평가자 등록
+     * */
+    int evuEmpRegist(UserReqVo vo);
+
+
 
 
 

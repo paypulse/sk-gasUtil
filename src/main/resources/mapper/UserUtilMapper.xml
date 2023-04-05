@@ -3,9 +3,18 @@
 <mapper namespace="com.example.skgasutils.mapper.UserUtilMapper">
 
     <insert id="userRegist" parameterType="UserReqVo">
-        INSERT INTO USER(EMP_ID,EMP_NM,SEQ_NO,ORG_ID,ORG_NM,DUTY_CD,DUTY_NM,JG_NM,JG_ID,JOB_ID,JOB_NM,POST_CD,POST_NM,BAND_CD,GRADE_STA_YMD,POST_AGE)
+        INSERT INTO [USER](EMP_ID,EMP_NM,SEQ_NO,ORG_ID,ORG_NM,DUTY_CD,DUTY_NM,JG_NM,JG_ID,JOB_ID,JOB_NM,POST_CD,POST_NM,BAND_CD,GRADE_STA_YMD,POST_AGE,INS_USER_ID, INS_YMDHMS)
         VALUES
-         () ///여기 할 차례
+         (#{empId},#{empNm},#{seqNo},#{orgId},#{orgNm},#{dutyCd},#{dutyNm},#{jgNm},#{jgId},#{jobId},#{jobNm},#{postCd},#{postNm},#{bandCd},#{gradeStaYmd},#{postAge},#{insUserId},#{insYmdhms})
     </insert>
+
+    <insert id="evuEmpRegist" parameterType="UserReqVo">
+        INSERT INTO EVU_EMP(EVU_STD_ID, EVU_EMP_ID, CUR_STEP_CD, EVU_STAT_CD, CHASU, EVU2_YN, CDP_CD, INS_USER_ID, INS_YMDHMS)
+        VALUES
+            (#{evuStdId}, #{empId}, #{curStepCd}, #{evuStatCd}, 0, 'N', '' , #{insUserId}, GETDATE())
+    </insert>
+
+
+
 
 </mapper>

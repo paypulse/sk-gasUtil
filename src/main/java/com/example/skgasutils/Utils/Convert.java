@@ -81,5 +81,18 @@ public class Convert {
 //    }
 
 
+    /**
+     * insert check
+     * */
+    private static final Map<Integer, String> insertCheck;
+    static {
+        insertCheck = new HashMap<>();
+        insertCheck.put(1,"인사에 이미 등록된 ID입니다.");
+        insertCheck.put(2,"피평가자에 이미 등록된 ID입니다.");
+        insertCheck.put(3, "역량에 등록이 안되어 있습니다.역량 확인 해주세요");
+        insertCheck.put(4, "역량 매핑이 이미 되어 있습니다.");
+    }
+
+
 
 }

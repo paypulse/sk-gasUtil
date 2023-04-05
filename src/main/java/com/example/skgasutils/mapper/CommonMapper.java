@@ -19,6 +19,11 @@ public interface CommonMapper {
     public List<EvuEmp> getEvuEmpList(String evuStdId);
 
     /**
+     * EvuEmp count check
+     * */
+    public int getEvuEmpCount(String evuEmpId);
+
+    /**
      * EvuMng check
      * */
     public List<EvuMng> getEvuMngList();
@@ -28,11 +33,21 @@ public interface CommonMapper {
      * */
     public List<EvuCdp> getEvuCdp(String evuStdId);
 
+    /**
+     * cdp 체크
+     * */
+    public int getEvuCdpCount(Map<String, String> param);
+
 
     /**
      * EVU_EMP_CDP CHECK
      * */
     public List<EvuEmpCdp> getEvuEmpCdp();
+
+    /**
+     * EVU_EMP_CDP check count
+     * */
+    public int getEvuEmpCdpCount(Map<String, String> param);
 
 
     /**

@@ -17,11 +17,6 @@ public class CommonUtil {
     }
 
 
-    /**
-     * evu_cdp에서 cdp_cd가 있는지 없는지 확인
-     * */
-    
-
 
 
 

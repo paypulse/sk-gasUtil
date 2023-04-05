@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 여기서 부텀 , 화면이 필요 하다.
@@ -29,11 +26,18 @@ public class UserUtil {
     private UserUtilService userUtilService;
 
     /**
+     * User 인사 정보 배치 및 스케쥴링 하는 로직 좀 추가 하자.
+     * **/
+
+
+    /**
      * 인의적으로 인사 db에 등록을 해야 할때
      * */
     @Operation(summary = "인사 DB 임의 등록 " ,description = "인사 DB에 없는 인사를 임의로 등록해야 할때")
-    @GetMapping(path ="/userRegist")
+    @PostMapping(value ="/userRegist")
     public ResponseEntity<CommonRes> userRegist(@RequestBody UserReqVo vo){
+
+        System.out.println("UserReqVo : " + vo );
         /**
          * TODO.
          * user에 등록 하고
@@ -44,8 +48,11 @@ public class UserUtil {
         int rv = 0;
         try{
             rv = userUtilService.userRegistService(vo);
+            System.out.println("rv :" + rv);
             if(rv >0){
+
                 return ResponseEntity.ok(CommonRes.builder()
+                        .data(rv)
                         .status("SUCCESS")
                         .msg("success regist user")
                         .build());

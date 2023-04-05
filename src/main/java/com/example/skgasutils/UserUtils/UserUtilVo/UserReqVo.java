@@ -10,6 +10,13 @@ import lombok.*;
 @Setter
 public class UserReqVo {
 
+    //평가번호
+    private String evuStdId;
+    //현재 평가 step
+    private String curStepCd;
+    //현재 stat
+    private String evuStatCd;
+
     //user 사번
     private String empId;
     //사원명 
@@ -37,6 +44,15 @@ public class UserReqVo {
     //직위명
     private String postNm;
     private String bandCd;
+
+    //등록 ID
+    private String insUserId;
+    //등록 년월일
+    private String insYmdhms;
+
+    //cdpNm
+    private String cdpNm;
+
     //직급년차기준일
     private String gradeStaYmd;
     private String postAge;

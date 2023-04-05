@@ -8,6 +8,13 @@
         WHERE EVU_STD_ID = #{evuStdId}
     </select>
 
+    <!-- 피평가자 검색 -->
+    <select id="getEvuEmpCount" resultType="int" parameterType="String">
+        SELECT COUNT(*)
+        FROM EVU_EMP
+        WHERE EVU_EMP_ID = #{evuEmpId}
+    </select>
+
     <select id="getEvuMngList" resultType="EvuMng">
         select *
         from EVU_MNG
@@ -19,6 +26,14 @@
         where EVU_STD_ID=#{evuStdId}
     </select>
 
+    <select id="getEvuCdpCount" resultType="int" parameterType="hashmap">
+        SELECT COUNT(*)
+        FROM EVU_CDP
+        WHERE EVU_STD_ID = #{evuStdId} and CDP_NM like #{cdpNm}
+    </select>
+
+
+
     <select id="getEvuEmpCdp" resultType="EvuEmpCdp">
         select *
         from EVU_EMP_CDP
@@ -29,6 +44,13 @@
         from evu_emp ee
         inner join EVU_EMP_CDP eec on (ee.EVU_EMP_NO = eec.EVU_EMP_NO)
         where ee.EVU_STD_ID=#{evuStdId}
+    </select>
+
+    <!-- EvuEmpCdp check count-->
+    <select id="getEvuEmpCdpCount" resultType="int" parameterType="hashmap">
+        SELECT COUNT(*)
+        FROM EVU_EMP_CDP
+        WHERE EVU_STD_ID =#{evuStdId} and EVU_EMP_NO =#{evuEmpNo}
     </select>
 
     <!-- 지정 평가자 가져오기 -->
@@ -56,9 +78,11 @@
     <!-- user 인사db 확인  -->
     <select id="getUserInfo" parameterType="String" resultType="int">
         SELECT count(*)
-        FROM USER
+        FROM [USER]
         WHERE EMP_ID = #{empId}
     </select>
+
+
 
 
 

@@ -10,6 +10,7 @@ public interface ExcelUploadMapper {
 
     /**
      * Excelupload후 insert
+     * 다권 피평가자 등록
      * */
     int insertEvuEmpId(List<ExcelEmpVo> totalEmpList);
 
