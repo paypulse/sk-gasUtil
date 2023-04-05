@@ -45,24 +45,24 @@ public class UserUtilServiceImpl implements UserUtilService {
         String date = util.nowDate1("yyyy-MM-dd HH:mm:ss");
 
         //1. user에 있는지 없는지 확인
-//         int userCount = commonMapper.getUserInfo(vo.getEmpId());
-//         System.out.println("userCount : " + userCount);
-//
-//         if(userCount < 1){
-//             //user에 등록
-//             vo.setInsUserId("00812");
-//             vo.setInsYmdhms(date);
-//             result = userUtilMapper.userRegist(vo);
-//         }
-//
-//        //2. evu_emp에 있는지 없는지 확인
+         int userCount = commonMapper.getUserInfo(vo.getEmpId());
+         System.out.println("userCount : " + userCount);
+
+         if(userCount < 1){
+             //user에 등록
+             vo.setInsUserId("00812");
+             vo.setInsYmdhms(date);
+             result = userUtilMapper.userRegist(vo);
+         }
+
+        //2. evu_emp에 있는지 없는지 확인
         int evuEmpCount = commonMapper.getEvuEmpCount(vo.getEmpId());
         System.out.println("evuEmpCount : " + evuEmpCount);
         if(evuEmpCount <1){
             vo.setEvuStdId("202301");
             vo.setCurStepCd("A0");
             vo.setEvuStatCd("E1");
-           // result += userUtilMapper.evuEmpRegist(vo);
+            result += userUtilMapper.evuEmpRegist(vo);
         }
 
         //3. evu_cdp에서 cdp_cd가 있는지 없는지 확인
