@@ -10,4 +10,10 @@ public interface UserUtilService {
     public int userRegistService(UserReqVo vo);
 
 
+    /**
+     *  인사 DB에만 저장 해야 할때
+     * */
+    public int onlyUserRegist(UserReqVo vo);
+
+
 }

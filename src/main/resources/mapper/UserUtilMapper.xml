@@ -13,6 +13,12 @@
         VALUES
             (#{evuStdId}, #{empId}, #{curStepCd}, #{evuStatCd}, 0, 'N', '' , #{insUserId}, GETDATE())
     </insert>
+    
+    <insert id="evuEmpCdpRegist" parameterType="UserReqVo">
+         INSERT INTO EVU_EMP_CDP(EVU_EMP_NO,STEP_CD,EVU_STD_ID,CDP_CD,INS_USER_ID,INS_YMDHMS,MOD_USER_ID,MOD_YMDHMS)
+         VALUES
+             (#{evuEmpNo},#{curStepCd},#{evuStdId},#{cdpCd},#{insUserId},GETDATE(),'','')
+    </insert>
 
 
 

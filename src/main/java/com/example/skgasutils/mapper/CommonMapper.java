@@ -36,7 +36,7 @@ public interface CommonMapper {
     /**
      * cdp 체크
      * */
-    public int getEvuCdpCount(Map<String, String> param);
+    public List<EvuCdp> getEvuCdpCount(Map<String, String> param);
 
 
     /**

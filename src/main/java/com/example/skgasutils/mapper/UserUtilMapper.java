@@ -18,6 +18,11 @@ public interface UserUtilMapper {
      * */
     int evuEmpRegist(UserReqVo vo);
 
+    /**
+     * 단권 evuEmpCdp 등록 할때
+     */
+    int evuEmpCdpRegist(UserReqVo vo);
+
 
 
 

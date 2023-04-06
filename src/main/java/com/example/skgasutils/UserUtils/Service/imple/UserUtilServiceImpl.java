@@ -7,6 +7,7 @@ import com.example.skgasutils.Utils.CommonUtil;
 import com.example.skgasutils.mapper.CommonMapper;
 import com.example.skgasutils.mapper.ExcelUploadMapper;
 import com.example.skgasutils.mapper.UserUtilMapper;
+import com.example.skgasutils.repository.EvuCdp;
 import com.example.skgasutils.repository.EvuEmp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,20 +49,20 @@ public class UserUtilServiceImpl implements UserUtilService {
          int userCount = commonMapper.getUserInfo(vo.getEmpId());
          System.out.println("userCount : " + userCount);
 
+        vo.setInsUserId("00812");
+        vo.setInsYmdhms(date);
+        vo.setEvuStdId("202301");
+        vo.setCurStepCd("A0");
+        vo.setEvuStatCd("E1");
+
          if(userCount < 1){
              //user에 등록
-             vo.setInsUserId("00812");
-             vo.setInsYmdhms(date);
              result = userUtilMapper.userRegist(vo);
          }
 
         //2. evu_emp에 있는지 없는지 확인
         int evuEmpCount = commonMapper.getEvuEmpCount(vo.getEmpId());
-        System.out.println("evuEmpCount : " + evuEmpCount);
         if(evuEmpCount <1){
-            vo.setEvuStdId("202301");
-            vo.setCurStepCd("A0");
-            vo.setEvuStatCd("E1");
             result += userUtilMapper.evuEmpRegist(vo);
         }
 
@@ -70,32 +71,52 @@ public class UserUtilServiceImpl implements UserUtilService {
         Map<String,String> map = new HashMap<>();
         map.put("evuStdId", vo.getEvuStdId());
         map.put("cdpNm", vo.getCdpNm());
-        int cdpCheck = commonMapper.getEvuCdpCount(map);
+        List<EvuCdp> cdpCheck = commonMapper.getEvuCdpCount(map);
+        vo.setCdpCd(cdpCheck.get(0).getCdpCd());
 
 
         //TODO. 제발 commonMapper 정리 좀 하자. 많이 지저분하네, 왜 이렇게 짠거지?
 
         //4. evu_emp_cdp에 있는지 없는지 확인
         //evu_emp_no값
-        String evuEmpNo;
         List<EvuEmp> empList =commonMapper.getEvuEmpList(vo.getEvuStdId());
         List<EvuEmp> emp = empList.stream().filter(n->{
             return n.getEvuEmpId().equals(vo.getEmpId());
         }).collect(Collectors.toList());
+
+        vo.setEvuEmpNo(String.valueOf(emp.get(0).getEvuEmpNo()));
+
         if(!emp.isEmpty()){
-            evuEmpNo = String.valueOf(emp.get(0).getEvuEmpNo());
+
             //evu_emp_cdp 체크
             Map<String,String> param = new HashMap<>();
             param.put("evuStdId", vo.getEvuStdId());
-            param.put("evuEmpNo", evuEmpNo);
+            param.put("evuEmpNo", vo.getEvuEmpNo());
             int evuEmpCdpCheck = commonMapper.getEvuEmpCdpCount(param);
 
             if(evuEmpCdpCheck<1){
-
+                result += userUtilMapper.evuEmpCdpRegist(vo);
             }
         }
 
 
         return result;
     }
+
+    @Override
+    public int onlyUserRegist(UserReqVo vo) {
+        // 1. 일단 먼저 등록이 되어 있는지 check
+        // 2. 등록이 되어 있지 않았다면 등록
+
+
+
+
+        return 0;
+    }
+
+
+
+
+
+
 }

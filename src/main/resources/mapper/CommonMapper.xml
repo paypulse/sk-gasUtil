@@ -26,8 +26,8 @@
         where EVU_STD_ID=#{evuStdId}
     </select>
 
-    <select id="getEvuCdpCount" resultType="int" parameterType="hashmap">
-        SELECT COUNT(*)
+    <select id="getEvuCdpCount" resultType="EvuCdp" parameterType="hashmap">
+        SELECT *
         FROM EVU_CDP
         WHERE EVU_STD_ID = #{evuStdId} and CDP_NM like #{cdpNm}
     </select>

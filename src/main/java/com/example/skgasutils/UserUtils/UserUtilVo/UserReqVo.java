@@ -12,6 +12,9 @@ public class UserReqVo {
 
     //평가번호
     private String evuStdId;
+    //피평가자 번호
+    private String evuEmpNo;
+
     //현재 평가 step
     private String curStepCd;
     //현재 stat
