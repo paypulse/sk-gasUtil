@@ -5,10 +5,8 @@ import com.example.skgasutils.excelUpload.Service.ExcelUploadService;
 import com.example.skgasutils.excelUpload.excelVo.ExcelEmpVo;
 import com.example.skgasutils.mapper.CommonMapper;
 import com.example.skgasutils.mapper.ExcelUploadMapper;
-import com.example.skgasutils.repository.EvuCdp;
-import com.example.skgasutils.repository.EvuEmp;
-import com.example.skgasutils.repository.EvuEmpCdp;
-import com.example.skgasutils.repository.EvuMng;
+import com.example.skgasutils.mapper.UserUtilMapper;
+import com.example.skgasutils.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
@@ -33,16 +31,23 @@ public class ExcelUploadImple implements ExcelUploadService {
     @Autowired
     private ExcelUploadMapper excelUpoadMaper;
 
+
+
     @Override
     public int insertEvuEmp(Sheet worksheet, String evuStdId) {
 
         Row row = null;
+
         //evuEmpList
         List<EvuEmp> empList = commonMapper.getEvuEmpList(evuStdId);
         //new empList
         List<ExcelEmpVo> newEmpList = new ArrayList<>();
         //중복 제거된 empList
         List<ExcelEmpVo> totalEmpList = new ArrayList<>();
+        //USER LIST
+        List<User> userList = commonMapper.getUserList();
+
+        System.out.println(userList);
 
         //index
         int index = 0;
@@ -52,6 +57,7 @@ public class ExcelUploadImple implements ExcelUploadService {
         //System.out.println("empList : " + empList);
 
         for (int i = 2; i < worksheet.getPhysicalNumberOfRows(); i++) {
+
             row = worksheet.getRow(i);
             ExcelEmpVo  emp = new ExcelEmpVo();
             emp.setEmpId(row.getCell(1).getStringCellValue());
@@ -72,6 +78,17 @@ public class ExcelUploadImple implements ExcelUploadService {
         totalEmpList =  newEmpList.stream().filter(o -> empList.stream().noneMatch(n -> {
             return o.getEvuEmpId().equals(n.getEvuEmpId());
         })).collect(Collectors.toList());
+
+        //user에 있는 orgId -> empOrgId에 맵핑해주기
+        totalEmpList.forEach(id ->{
+            userList.forEach(empId ->{
+                if(id.getEvuEmpId().equals(empId.getEmpId())){
+                    id.setEmpOrgId(empId.getOrgId());
+                }
+            });
+        });
+
+        System.out.println(totalEmpList.size());
 
         if(totalEmpList.size()>0){
             /**
@@ -95,6 +112,9 @@ public class ExcelUploadImple implements ExcelUploadService {
         List<EvuEmp> empList = commonMapper.getEvuEmpList(evuStdId);
         //피평가자 list
         List<EvuMng> mngList = commonMapper.getEvuMngList();
+        //인사DB
+        List<User> userList = commonMapper.getUserList();
+
 
         //1차 평가자
         int resultMng1 =0;
@@ -102,11 +122,13 @@ public class ExcelUploadImple implements ExcelUploadService {
         int resultMng3 =0;
 
 
+
         Map<String,Object> insertInfo = new HashMap<>();
         insertInfo.put("empList", empList);
         insertInfo.put("mngList", mngList);
         insertInfo.put("workSheet", worksheet);
         insertInfo.put("evuStdId",evuStdId);
+        insertInfo.put("userList", userList);
 
         FileInput fileInput = new FileInput();
 
@@ -119,6 +141,10 @@ public class ExcelUploadImple implements ExcelUploadService {
         System.out.println("check mng3 size : " + mng3.size());
         System.out.println("check mng1 : " + mng1);
         System.out.println("check mng1 size : " + mng1.size());
+
+
+        ///평가자 mng_org_id ->  user에서 가져 온다.
+
 
         if(mng1.size() >0){
             resultMng1 = excelUpoadMaper.insertEvuMng1(mng1);

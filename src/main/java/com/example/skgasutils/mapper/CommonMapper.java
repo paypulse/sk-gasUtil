@@ -73,6 +73,12 @@ public interface CommonMapper {
      * */
     public int getUserInfo(String empId);
 
+    /**
+     * User 정보 가져 오기
+     * **/
+    public List<User> getUserList();
+
+
 
 
 }

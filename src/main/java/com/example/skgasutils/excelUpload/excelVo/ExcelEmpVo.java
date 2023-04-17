@@ -41,6 +41,9 @@ public class ExcelEmpVo {
     private String insUserId;
     //stepCD
     private String stepCd;
+    //조직 ID
+    private String empOrgId;
+
 
 
 

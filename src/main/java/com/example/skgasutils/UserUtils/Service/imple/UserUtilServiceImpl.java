@@ -30,6 +30,11 @@ public class UserUtilServiceImpl implements UserUtilService {
     private UserUtilMapper userUtilMapper;
 
 
+    /**
+     * TODO. emp_org_id 를 user에 있는 orgId에서 가져 오기
+     * **/
+
+
 
     /**
      * TODO.
@@ -104,7 +109,7 @@ public class UserUtilServiceImpl implements UserUtilService {
     }
 
     @Override
-    public int onlyUserRegist(UserReqVo vo) {
+    public int onlyUserRegist(String evuStdId, String empNm) {
         // 1. 일단 먼저 등록이 되어 있는지 check
         // 2. 등록이 되어 있지 않았다면 등록
 

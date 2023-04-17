@@ -2,7 +2,10 @@ package com.example.skgasutils.mapper;
 
 
 import com.example.skgasutils.UserUtils.UserUtilVo.UserReqVo;
+import com.example.skgasutils.repository.User;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface UserUtilMapper {

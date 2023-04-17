@@ -80,12 +80,12 @@ public class UserUtil {
      * 인사 DB에만 저장 해야 할때
      * **/
     @Operation(summary = "인사 DB 에만 등록 하고자 할때 " ,description = "인사 DB에만  임의로 등록 하고자 할때")
-    @PostMapping(value ="/onlyUserRegist")
-    public ResponseEntity<CommonRes> onlyUserRegist(@RequestBody UserReqVo vo){
+    @GetMapping(value ="/onlyUserRegist")
+    public ResponseEntity<CommonRes> onlyUserRegist(@RequestParam String evuStdId, @RequestParam String empNm){
 
         int rv =0;
         try{
-            rv = userUtilService.onlyUserRegist(vo);
+            rv = userUtilService.onlyUserRegist(evuStdId,empNm);
             if(rv >0){
                 return ResponseEntity.ok(CommonRes.builder()
                         .data(rv)

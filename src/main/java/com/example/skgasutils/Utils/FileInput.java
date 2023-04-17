@@ -4,6 +4,7 @@ import com.example.skgasutils.excelUpload.excelVo.ExcelEmpVo;
 import com.example.skgasutils.mapper.ExcelUploadMapper;
 import com.example.skgasutils.repository.EvuEmp;
 import com.example.skgasutils.repository.EvuMng;
+import com.example.skgasutils.repository.User;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -59,6 +60,10 @@ public class FileInput {
         List<EvuEmp> empList = (List<EvuEmp>) info.get("empList");
         List<EvuMng> mngList = (List<EvuMng>) info.get("mngList");
 
+        //인사DB인 userList
+        List<User> userList = (List<User>) info.get("userList");
+
+
 
         //1차 평가자
         List<EvuMng> mngList1 = mngList.stream().filter(n -> {
@@ -86,15 +91,24 @@ public class FileInput {
             if(chasu == 1){
                 //1차 평가자
                 data.setMng1Id(row.getCell(9).getStringCellValue());
+                //1차 평가자의 orgId setting  TODO. 4월 18일 할 차례 : users에 null이 들어간다.
+                Optional<User> users = userList.stream().filter(s ->s.getEmpId().equals(data.getMng1Id())).findAny();
+                data.setEmpOrgId(users.get().getOrgId());
+
             }else{
                 //최종 평가자
                 data.setMng3Id(formatter.formatCellValue(row.getCell(11)));
+                //3차 평가자의 orgId setting
+                Optional<User> users = userList.stream().filter(s -> s.getEmpId().equals(data.getMng3Id())).findAny();
+                data.setEmpOrgId(users.get().getOrgId());
+
             }
             data.setInsUserId("00812");
             data.setMngStatCd("E1");
 
             excelMngList.add(data);
         }
+
 
 
         if(chasu ==1){

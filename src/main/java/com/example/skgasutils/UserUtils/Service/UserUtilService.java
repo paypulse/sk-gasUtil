@@ -1,6 +1,7 @@
 package com.example.skgasutils.UserUtils.Service;
 
 import com.example.skgasutils.UserUtils.UserUtilVo.UserReqVo;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public interface UserUtilService {
 
@@ -13,7 +14,7 @@ public interface UserUtilService {
     /**
      *  인사 DB에만 저장 해야 할때
      * */
-    public int onlyUserRegist(UserReqVo vo);
+    public int onlyUserRegist(String evuStdId, String empNm);
 
 
 }

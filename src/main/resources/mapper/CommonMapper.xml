@@ -82,6 +82,10 @@
         WHERE EMP_ID = #{empId}
     </select>
 
+    <select id="getUserList" resultType="User">
+        SELECT *
+        FROM [USER]
+    </select>
 
 
 
