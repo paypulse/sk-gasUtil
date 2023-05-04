@@ -142,10 +142,6 @@ public class ExcelUploadImple implements ExcelUploadService {
         System.out.println("check mng1 : " + mng1);
         System.out.println("check mng1 size : " + mng1.size());
 
-
-        ///평가자 mng_org_id ->  user에서 가져 온다.
-
-
         if(mng1.size() >0){
             resultMng1 = excelUpoadMaper.insertEvuMng1(mng1);
         }

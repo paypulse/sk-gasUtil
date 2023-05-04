@@ -43,6 +43,8 @@ public class ExcelEmpVo {
     private String stepCd;
     //조직 ID
     private String empOrgId;
+    //평가자 조직 ID
+    private String mngOrgId;
 
 
 

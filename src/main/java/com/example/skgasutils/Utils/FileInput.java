@@ -91,16 +91,21 @@ public class FileInput {
             if(chasu == 1){
                 //1차 평가자
                 data.setMng1Id(row.getCell(9).getStringCellValue());
-                //1차 평가자의 orgId setting  TODO. 4월 18일 할 차례 : users에 null이 들어간다.
-                Optional<User> users = userList.stream().filter(s ->s.getEmpId().equals(data.getMng1Id())).findAny();
-                data.setEmpOrgId(users.get().getOrgId());
-
+                //1차 평가자의 orgId setting
+                userList.forEach(s ->{
+                    if(s.getEmpId().equals(data.getMng1Id())){
+                        data.setMngOrgId(s.getOrgId());
+                    }
+                });
             }else{
                 //최종 평가자
                 data.setMng3Id(formatter.formatCellValue(row.getCell(11)));
-                //3차 평가자의 orgId setting
-                Optional<User> users = userList.stream().filter(s -> s.getEmpId().equals(data.getMng3Id())).findAny();
-                data.setEmpOrgId(users.get().getOrgId());
+                //1차 평가자의 orgId setting
+                userList.forEach(s ->{
+                    if(s.getEmpId().equals(data.getMng3Id())){
+                        data.setMngOrgId(s.getOrgId());
+                    }
+                });
 
             }
             data.setInsUserId("00812");
@@ -108,8 +113,6 @@ public class FileInput {
 
             excelMngList.add(data);
         }
-
-
 
         if(chasu ==1){
             insertMngList = excelMngList.stream()
