@@ -218,6 +218,73 @@ public class ExcelUpload {
 
     }
 
+    /**
+     * 평가자 상태 값 변경 
+     * */
+    @Operation(summary = "평가자 상태값 변경 ", description = "평가자들의 상태값 변경 ")
+    @PostMapping(value = "/updateMngStatCd", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CommonRes> updateMngStatCd(@RequestParam(value="file", required = false)MultipartFile file,@RequestParam String evuStdId) throws IOException {
+
+        /**
+         * 추가.
+         * cdp_nm으로 cdp_cd를 찾아서 evu_emp_cdp 테이블에 맵칭
+         * **/
+        FileInput check = new FileInput();
+
+        int rv=0;
+
+        if(check.filecheck(file)){
+
+            Sheet worksheet = check.worksheet(file);
+
+
+            try{
+                rv =excelUploadService.updateMngStatCd(worksheet, evuStdId);
+
+                if(rv >=1){
+                    //insert 됨
+                    return ResponseEntity.ok(CommonRes.builder()
+                            .data(rv)
+                            .status("SUCCESS")
+                            .msg("insert success")
+                            .build());
+                }else{
+                    if(rv == 0){
+                        return ResponseEntity.ok(CommonRes.builder()
+                                .data(rv)
+                                .msg("이미 등록된 사용자 입니다.")
+                                .status("SUCCESS")
+                                .build());
+                    }else{
+                        //insert 안됨
+                        return ResponseEntity.ok(CommonRes.builder()
+                                .msg("insert fail")
+                                .status("FAIL")
+                                .build());
+                    }
+
+                }
+
+
+            }catch (Exception e){
+                return ResponseEntity.ok(CommonRes.builder()
+                        .data(e)
+                        .msg(e.getMessage())
+                        .build());
+            }
+
+
+        }else{
+            return ResponseEntity.ok(CommonRes.builder()
+                    .status("FAIL")
+                    .msg("no file")
+                    .build());
+        }
+
+
+    }
+    
+    
 
     /**
      * 피 평가자 CDP 맵핑

@@ -29,4 +29,11 @@ public interface ExcelUploadMapper {
      * **/
     int insertCdpCd(List<ExcelEmpVo> cdpList);
 
+
+    /**
+     * 4. 평가자 상태값 변경
+     * */
+    int updateMng1StatCd(List<ExcelEmpVo> mngList);
+    int updateMng3StatCd(List<ExcelEmpVo> mngList);
+
 }

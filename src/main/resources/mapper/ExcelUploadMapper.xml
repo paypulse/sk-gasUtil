@@ -13,31 +13,72 @@
 
     <!-- 1차 평가자 insert-->
     <insert id="insertEvuMng1" parameterType="List">
-        INSERT INTO EVU_MNG( EVU_MNG_ID,EVU_EMP_NO,MNG_ORG_ID,CHASU,APPLY_DATE,INS_USER_ID,INS_YMDHMS,MNG_STAT_CD)
+        INSERT INTO EVU_MNG( EVU_MNG_ID,EVU_EMP_NO,MNG_ORG_ID,CHASU,APPLY_DATE,INS_USER_ID,INS_YMDHMS,MNG_STAT_CD,TEMPORARY_YN)
         VALUES
         <foreach collection="mngList1" item="mng" index="hashmap" separator=",">
-            (#{mng.mng1Id},#{mng.evuEmpNo},#{mng.mngOrgId} ,1,GETDATE(),#{mng.insUserId},GETDATE(),#{mng.mngStatCd})
+            (#{mng.mng1Id},#{mng.evuEmpNo},#{mng.mngOrgId} ,1,GETDATE(),#{mng.insUserId},GETDATE(),'MB','')
         </foreach>
     </insert>
 
     <!-- 최종 평가자 insert -->
     <insert id="insertEvuMng3" parameterType="List">
-        INSERT INTO EVU_MNG( EVU_MNG_ID,EVU_EMP_NO,MNG_ORG_ID,CHASU,APPLY_DATE,INS_USER_ID,INS_YMDHMS,MNG_STAT_CD)
+        INSERT INTO EVU_MNG( EVU_MNG_ID,EVU_EMP_NO,MNG_ORG_ID,CHASU,APPLY_DATE,INS_USER_ID,INS_YMDHMS,MNG_STAT_CD,TEMPORARY_YN)
         VALUES
         <foreach collection="mngList3" item="mng" index="hashmap" separator=",">
-            (#{mng.mng3Id},#{mng.evuEmpNo},#{mng.mngOrgId},3,GETDATE(),#{mng.insUserId},GETDATE(),#{mng.mngStatCd})
+            (#{mng.mng3Id},#{mng.evuEmpNo},#{mng.mngOrgId},3,GETDATE(),#{mng.insUserId},GETDATE(),'MB','')
         </foreach>
     </insert>
 
     <!-- cdp_cd mapping insert -->
     <insert id="insertCdpCd" parameterType="List">
-        INSERT INTO EVU_EMP_CDP(EVU_EMP_NO,STEP_CD,EVU_STD_ID,CDP_CD,INS_USER_ID,INS_YMDHMS,MOD_USER_ID,MOD_YMDHMS)
-        VALUES
-        <foreach collection="cdpList" item="cdp" index="hashmap" separator=",">
-            (#{cdp.evuEmpNo},#{cdp.stepCd},#{cdp.evuStdId},#{cdp.cdpCd},#{cdp.insUserId},GETDATE(),'','')
+        <foreach collection="cdpList" item="cdp" index="hashmap">
+            MERGE INTO EVU_EMP_CDP AS A
+            USING (SELECT 1 AS DUAL) AS B
+            ON (A.EVU_EMP_NO=#{cdp.evuEmpNo} and A.STEP_CD='C0')
+            WHEN MATCHED  THEN
+            UPDATE SET
+                CDP_CD =#{cdp.cdpCd},
+                MOD_USER_ID='00812',
+                MOD_YMDHMS =GETDATE()
+            WHEN NOT MATCHED THEN
+            INSERT(
+                EVU_EMP_NO,
+                STEP_CD,
+                EVU_STD_ID,
+                CDP_CD,
+                INS_USER_ID,
+                INS_YMDHMS
+            ) VALUES (
+                 #{cdp.evuEmpNo},
+                 'C0',
+                 '202301',
+                 #{cdp.cdpCd},
+                 '00812',
+                 GETDATE()
+            );
+
         </foreach>
+
     </insert>
 
+
+    <!-- update-->
+    <update id="updateMng1StatCd" parameterType="List">
+        <foreach collection="mngList" item="mng" index="hashmap">
+            UPDATE EVU_MNG
+            SET MNG_STAT_CD ='MB' ,
+                TEMPORARY_YN =''
+            WHERE CHASU = '1' AND EVU_EMP_NO = #{mng.evuEmpNo}
+        </foreach>
+    </update>
+    <update id="updateMng3StatCd" parameterType="List">
+        <foreach collection="mngList" item="mng" index="hashmap">
+            UPDATE EVU_MNG
+            SET MNG_STAT_CD ='MB' ,
+                TEMPORARY_YN =''
+            WHERE CHASU = '3' AND EVU_EMP_NO = #{mng.evuEmpNo}
+        </foreach>
+    </update>
 
 
 

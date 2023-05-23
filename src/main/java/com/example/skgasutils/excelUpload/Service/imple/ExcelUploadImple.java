@@ -143,10 +143,12 @@ public class ExcelUploadImple implements ExcelUploadService {
         System.out.println("check mng1 size : " + mng1.size());
 
         if(mng1.size() >0){
+            System.out.println(mng1);
             resultMng1 = excelUpoadMaper.insertEvuMng1(mng1);
         }
 
         if(mng3.size() >0){
+            System.out.println(mng3);
             resultMng3 = excelUpoadMaper.insertEvuMng3(mng3);
         }
 
@@ -198,26 +200,49 @@ public class ExcelUploadImple implements ExcelUploadService {
                 data.setCdpCd("");
             }
 
-            data.setStepCd("B0");
+            data.setStepCd("C0");
             data.setEvuStdId(evuStdId);
             data.setInsUserId("00812");
             excelList.add(data);
           }
 
+          System.out.println(excelList.size());
 
-        resultCdpMapping = excelUpoadMaper.insertCdpCd(excelList);
+         resultCdpMapping = excelUpoadMaper.insertCdpCd(excelList);
 
         return resultCdpMapping;
     }
 
+    @Override
+    public int updateMngStatCd(Sheet worksheet, String evuStdId) {
+        //1차 평가자와 3차 평가자의 상태를 MB로 바꾸기
 
+        List<ExcelEmpVo> excelList = new ArrayList<>();
 
+        List<EvuEmp> empList = commonMapper.getEvuEmpList(evuStdId);
 
+        Row row = null;
+        for(int i=2;i<worksheet.getPhysicalNumberOfRows();i++){
+            row = worksheet.getRow(i);
+            ExcelEmpVo data = new ExcelEmpVo();
 
+            data.setEmpId(row.getCell(1).getStringCellValue());
+            data.setEvuEmpId(row.getCell(1).getStringCellValue());
+            Optional<EvuEmp> emp = empList.stream().filter(s -> s.getEvuEmpId().equals(data.getEmpId())).findAny();
+            data.setEvuEmpNo(Integer.toString(emp.get().getEvuEmpNo()));
 
+            excelList.add(data);
+        }
 
+        System.out.println(excelList);
+        System.out.println(excelList.size());
 
-
+        int mng1 = 0;
+        mng1 = excelUpoadMaper.updateMng1StatCd(excelList);
+        int mng3 =0;
+        mng3 = excelUpoadMaper.updateMng3StatCd(excelList);
+        return  mng1 * mng3;
+    }
 
 
 }

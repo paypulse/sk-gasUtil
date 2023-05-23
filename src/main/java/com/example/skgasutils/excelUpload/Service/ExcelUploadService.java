@@ -25,6 +25,10 @@ public interface ExcelUploadService {
     public int insertEmpCdp(Sheet worksheet, String evuStdId);
 
 
+    /**
+     * 4. 평가자 상태값 변경
+     * **/
+    public int updateMngStatCd(Sheet worksheet, String evuStdId);
 
 
 
