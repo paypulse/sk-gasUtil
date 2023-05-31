@@ -27,6 +27,12 @@ public interface UserUtilMapper {
     int evuEmpCdpRegist(UserReqVo vo);
 
 
+    /**
+     *
+     * */
+
+
+
 
 
 

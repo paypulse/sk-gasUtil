@@ -4,12 +4,21 @@ package com.example.skgasutils.UserUtils;
 import com.example.skgasutils.UserUtils.Service.UserUtilService;
 import com.example.skgasutils.UserUtils.UserUtilVo.UserReqVo;
 import com.example.skgasutils.Utils.CommonRes;
+import com.example.skgasutils.Utils.CommonUtil;
+import com.example.skgasutils.Utils.FileInput;
+import com.example.skgasutils.repository.EvuEmp;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * 여기서 부텀 , 화면이 필요 하다.
@@ -115,27 +124,70 @@ public class UserUtil {
 
 
 
-
     /**
      * 바뀐 계정으로 사용자 정보를 이관해야 할때
      * */
-    @Operation(summary = "바뀐 계정으로 사용자 정보를 이관해야 할때", description = "이전 계정의 데이터를 바뀐 계정으로 데이터 이관해야 할때")
-    @GetMapping(path="/alterUserData")
-    public ResponseEntity<CommonRes> alterUserData(){
+//    @Operation(summary = "바뀐 계정으로 사용자 정보를 이관해야 할때", description = "이전 계정의 데이터를 바뀐 계정으로 데이터 이관해야 할때")
+//    @GetMapping(path="/alterUserData")
+//    public ResponseEntity<CommonRes> alterUserData(){
+//
+//        /**
+//         * 이관 해야 될 테이블들
+//         * evu_emp
+//         * 	evu_mng
+//         * 	evu_task
+//         * 	evu_tot
+//         * 	evu_comp
+//         * 	evu_feedback
+//         * */
+//
+//
+//        return null;
+//    }
 
-        /**
-         * 이관 해야 될 테이블들
-         * evu_emp
-         * 	evu_mng
-         * 	evu_task
-         * 	evu_tot
-         * 	evu_comp
-         * 	evu_feedback
-         * */
 
 
-        return null;
+    /**
+     * 엑셀 파일 명단중  면수습/정규 회원 구분
+     * */
+    @Operation(summary = "면수습/정규 구분", description = "면수습/정규 구분")
+    @PostMapping(value="/checkEmpGubun"  , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public  ResponseEntity<CommonRes> checkEmpGubun(@RequestParam(value="file", required = false)MultipartFile file,@RequestParam String evuStdId) throws IOException {
+
+        CommonRes response = new CommonRes();
+
+        //면수습인지 아닌지 check 하는 로직
+        FileInput check = new FileInput();
+        if(check.filecheck(file)){
+
+
+            Sheet worksheet = check.worksheet(file);
+
+            List<EvuEmp> data = userUtilService.checkEmpList(evuStdId, worksheet);
+
+            return ResponseEntity.ok(CommonRes.builder()
+                    .data(data)
+                    .status("SUCCESS")
+                    .msg("checkList")
+                    .build());
+
+
+
+
+        }else{
+            return ResponseEntity.ok(CommonRes.builder()
+                    .status("fail")
+                    .msg("no file")
+                    .build());
+        }
+
+
+
+
+
+
     }
+
 
 
 

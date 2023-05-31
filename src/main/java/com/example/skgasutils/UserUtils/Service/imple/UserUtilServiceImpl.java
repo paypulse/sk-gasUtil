@@ -10,9 +10,12 @@ import com.example.skgasutils.mapper.UserUtilMapper;
 import com.example.skgasutils.repository.EvuCdp;
 import com.example.skgasutils.repository.EvuEmp;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,9 +122,30 @@ public class UserUtilServiceImpl implements UserUtilService {
         return 0;
     }
 
+    @Override
+    public List<EvuEmp> checkEmpList(String evuStdId, Sheet worksheet) {
+
+        System.out.println(worksheet);
+        System.out.println(evuStdId);
+
+
+        List<Map<String,String>> paramList = new ArrayList<>();
+
+
+        Row row = null;
+        for(int i=3;i < worksheet.getPhysicalNumberOfRows();i++){
+            row = worksheet.getRow(i);
+            Map<String, String> param = new HashMap<>();
+            param.put("evuEmpId", row.getCell(2).getStringCellValue());
+            param.put("evuStdId", evuStdId);
+            paramList.add(param);
+        }
+        System.out.println(paramList);
 
 
 
+        return null;
+    }
 
 
 }
