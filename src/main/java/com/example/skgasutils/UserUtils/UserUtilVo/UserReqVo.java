@@ -61,4 +61,10 @@ public class UserReqVo {
     private String gradeStaYmd;
     private String postAge;
 
+    //발령코드, 발령명
+    private String appntCd;
+    private String appntNm;
+
+
+
 }

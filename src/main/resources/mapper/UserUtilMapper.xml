@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.skgasutils.mapper.UserUtilMapper">
 
+
     <insert id="userRegist" parameterType="UserReqVo">
         INSERT INTO [USER](EMP_ID,EMP_NM,SEQ_NO,ORG_ID,ORG_NM,DUTY_CD,DUTY_NM,JG_NM,JG_ID,JOB_ID,JOB_NM,POST_CD,POST_NM,BAND_CD,GRADE_STA_YMD,POST_AGE,INS_USER_ID, INS_YMDHMS)
         VALUES
@@ -20,6 +21,32 @@
              (#{evuEmpNo},#{curStepCd},#{evuStdId},#{cdpCd},#{insUserId},GETDATE(),'','')
     </insert>
 
+
+
+    <!-- 면수습/계약직 추출 -->
+
+    <select id="checkEmpCareerList" resultType="UserReqVo" parameterType="String" >
+        SELECT *
+        FROM (
+                 select
+                     EVU_EMP_ID as empId,
+                     EVU_STD_ID,
+                     APPNT_NM,
+                     APPNT_CD
+                 from (
+                          select
+                              DISTINCT (EVU_EMP_ID),
+                                       ee.EVU_STD_ID,
+                                       CASE WHEN EMP_ID BETWEEN 8000 AND 9000 THEN '계약직'
+                                            WHEN APPNT_CD = 1050 THEN '면수습'
+                                            ELSE '실패' END AS APPNT_NM,
+                                       uc.APPNT_CD
+                          from EVU_EMP ee
+                                   inner join USER_CAREER uc on ee.EVU_EMP_ID = uc.EMP_ID) as a
+                 where 1=1 and
+                     a.EVU_STD_ID =#{evuStdId}) AS T
+        INNER JOIN [USER] u  ON T.empId = u.EMP_ID
+    </select>
 
 
 

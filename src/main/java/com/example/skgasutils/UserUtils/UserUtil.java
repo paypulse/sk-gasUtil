@@ -6,11 +6,17 @@ import com.example.skgasutils.UserUtils.UserUtilVo.UserReqVo;
 import com.example.skgasutils.Utils.CommonRes;
 import com.example.skgasutils.Utils.CommonUtil;
 import com.example.skgasutils.Utils.FileInput;
+import com.example.skgasutils.Utils.FileOutput;
 import com.example.skgasutils.repository.EvuEmp;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.tika.config.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -150,39 +156,74 @@ public class UserUtil {
     /**
      * 엑셀 파일 명단중  면수습/정규 회원 구분
      * */
-    @Operation(summary = "면수습/정규 구분", description = "면수습/정규 구분")
-    @PostMapping(value="/checkEmpGubun"  , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public  ResponseEntity<CommonRes> checkEmpGubun(@RequestParam(value="file", required = false)MultipartFile file,@RequestParam String evuStdId) throws IOException {
 
-        CommonRes response = new CommonRes();
+    @Operation(summary = "면수습/정규 구분", description = "면수습/정규 구분")
+    @PostMapping(value="/checkEmpGubun" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+    public void checkEmpGubun( @RequestParam("evuStdId")String evuStdId,@RequestParam(value="file", required = false)MultipartFile file,HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        //excel 템플릿 양식위치
+        String formPath = "/excelTemplate/userCareer.xlsx";
+        //excel file 명
+        String fileName = "userCareer.xlsx";
+        FileOutput fileOutput = new FileOutput(formPath, request);
+        FileInput check = new FileInput();
+
 
         //면수습인지 아닌지 check 하는 로직
-        FileInput check = new FileInput();
-        if(check.filecheck(file)){
-
+        if(file.getResource().exists()) {
 
             Sheet worksheet = check.worksheet(file);
 
-            List<EvuEmp> data = userUtilService.checkEmpList(evuStdId, worksheet);
 
-            return ResponseEntity.ok(CommonRes.builder()
-                    .data(data)
-                    .status("SUCCESS")
-                    .msg("checkList")
-                    .build());
+            //면수습 (flag  : 1)
+            List<UserReqVo> probation = userUtilService.checkEmpAppntList(evuStdId, worksheet, 1);
+
+            //계약직 (flag : 2)
+            List<UserReqVo> partTime = userUtilService.checkEmpAppntList(evuStdId, worksheet, 2);
+
+            System.out.println("probation : " + probation);
+            System.out.println("partTime : " + partTime.size());
+
+
+            /**
+             * 면수습/계약직 출력
+             * */
+            int rownum = 4;
+            Row voCnt = fileOutput.xssfSheet.getRow(2);
+            voCnt.createCell(2).setCellValue(probation.size());
+            voCnt.createCell(7).setCellValue(partTime.size());
+
+            if (!probation.isEmpty() || !partTime.isEmpty()) {
+                for (UserReqVo vo : probation) {
+                    Row row = fileOutput.xssfSheet.createRow(rownum);
+                    row.createCell(1).setCellValue(vo.getEmpId());
+                    row.createCell(2).setCellValue(vo.getEmpNm());
+                    row.createCell(3).setCellValue(vo.getAppntCd());
+                    row.createCell(4).setCellValue(vo.getAppntNm());
+
+                    rownum++;
+
+
+                }
+
+                for(UserReqVo vo : partTime){
+                    Row row = fileOutput.xssfSheet.createRow(rownum);
+                    row.createCell(1).setCellValue(vo.getEmpId());
+                    row.createCell(2).setCellValue(vo.getEmpNm());
+                    row.createCell(3).setCellValue(vo.getAppntCd());
+                    row.createCell(4).setCellValue(vo.getAppntNm());
+
+                    rownum++;
+                }
+
+
+                fileOutput.makeFile(response, fileOutput.xssfSheet, fileName);
+            }
 
 
 
 
-        }else{
-            return ResponseEntity.ok(CommonRes.builder()
-                    .status("fail")
-                    .msg("no file")
-                    .build());
         }
-
-
-
 
 
 

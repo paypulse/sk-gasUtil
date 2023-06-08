@@ -9,6 +9,8 @@ import com.example.skgasutils.mapper.ExcelUploadMapper;
 import com.example.skgasutils.mapper.UserUtilMapper;
 import com.example.skgasutils.repository.EvuCdp;
 import com.example.skgasutils.repository.EvuEmp;
+import com.example.skgasutils.repository.User;
+import com.example.skgasutils.repository.UserCareer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -123,29 +126,44 @@ public class UserUtilServiceImpl implements UserUtilService {
     }
 
     @Override
-    public List<EvuEmp> checkEmpList(String evuStdId, Sheet worksheet) {
+    public List<UserReqVo> checkEmpAppntList(String evuStdId, Sheet worksheet, int flag) {
 
         System.out.println(worksheet);
         System.out.println(evuStdId);
 
 
-        List<Map<String,String>> paramList = new ArrayList<>();
+        List<UserReqVo> checkEmpList = userUtilMapper.checkEmpCareerList(evuStdId);
+        List<Map<String,Object>> excelList = new ArrayList<>();
 
 
         Row row = null;
         for(int i=3;i < worksheet.getPhysicalNumberOfRows();i++){
             row = worksheet.getRow(i);
-            Map<String, String> param = new HashMap<>();
-            param.put("evuEmpId", row.getCell(2).getStringCellValue());
-            param.put("evuStdId", evuStdId);
-            paramList.add(param);
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("empId",row.getCell(2).getStringCellValue() );
+            map.put("evuStdId", evuStdId);
+            excelList.add(map);
         }
-        System.out.println(paramList);
+
+        List<UserReqVo> resultList = new ArrayList<>();
+
+        if(flag == 1 ){
+            //면수습
+            resultList = checkEmpList.stream().filter(n-> excelList.stream().anyMatch(m ->{
+                return n.getEmpId().equals(m.get("empId")) && n.getAppntNm().equals("면수습") ;
+            })).collect(Collectors.toList());
+        }else{
+            //계약직
+            resultList = checkEmpList.stream().filter(n-> excelList.stream().anyMatch(m ->{
+                return n.getEmpId().equals(m.get("empId")) && n.getAppntNm().equals("계약직") ;
+            })).collect(Collectors.toList());
+        }
 
 
-
-        return null;
+        return resultList;
     }
+
 
 
 }

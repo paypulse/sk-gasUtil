@@ -21,7 +21,12 @@ public interface UserUtilService {
     public int onlyUserRegist(String evuStdId, String empNm);
 
 
-    public List<EvuEmp> checkEmpList(String evuStdId, Sheet worksheet);
+    /**
+     * 면수습/계약직 대상자 check
+     * **/
+    public List<UserReqVo> checkEmpAppntList(String evuStdId, Sheet worksheet, int flag);
+
+
 
 
 }
