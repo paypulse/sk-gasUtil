@@ -1,9 +1,6 @@
 package com.example.skgasutils.excelDownload.Service;
 
-import com.example.skgasutils.excelDownload.downloadVo.EvuEmpMngVo;
-import com.example.skgasutils.excelDownload.downloadVo.EvuTds1Vo;
-import com.example.skgasutils.excelDownload.downloadVo.EvuTotDiffVo;
-import com.example.skgasutils.excelDownload.downloadVo.EvuTotStandVo;
+import com.example.skgasutils.excelDownload.downloadVo.*;
 
 import java.util.List;
 
@@ -32,5 +29,16 @@ public interface ExcelDownloadService {
     public List<EvuTds1Vo> selectTds1PersonInfoList(String evuStdId);
 
 
+    public List<EvuTds2> selectTds2FeedbackNotd(String evuStdId);
+
+    public List<EvuTds2> selectTds2FeedbackResult(String evuStdId);
+
+
+    /**
+     *  연말 평가 기준 엑셀 다운로드
+     * */
+    public List<EvuTotStandVo> selectTds2Cdp(String evuStdId);
+
 
 }
+

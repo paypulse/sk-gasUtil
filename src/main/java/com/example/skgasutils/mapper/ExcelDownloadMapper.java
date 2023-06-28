@@ -1,10 +1,7 @@
 package com.example.skgasutils.mapper;
 
 
-import com.example.skgasutils.excelDownload.downloadVo.EvuEmpMngVo;
-import com.example.skgasutils.excelDownload.downloadVo.EvuTds1Vo;
-import com.example.skgasutils.excelDownload.downloadVo.EvuTotDiffVo;
-import com.example.skgasutils.excelDownload.downloadVo.EvuTotStandVo;
+import com.example.skgasutils.excelDownload.downloadVo.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -39,6 +36,16 @@ public interface ExcelDownloadMapper {
 
 
 
+    List<EvuTds2> selectTds2FeedbackNotd(String evuStdId);
+
+
+    List<EvuTds2> selectTds2FeedbackResult(String evuStdId);
+
+
+    /**
+     * 2. 연말 평가 기준 엑셀 다운로드
+     * */
+    List<EvuTotStandVo> selectTds2Cdp(String evuStdId);
 
 
 }

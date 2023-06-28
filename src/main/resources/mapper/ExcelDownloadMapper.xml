@@ -92,8 +92,87 @@
         where ee.EVU_STD_ID = #{evuStdId}
     </select>
 
+    <select id="selectTds2FeedbackNotd" resultType="EvuTds2" parameterType="String">
+        SELECT
+            M.EVU_MNG_ID EVU_MNG_ID,
+            MU.EMP_NM MNG_NM,
+            MU.ORG_NM MNG_ORG_NM,
+            M.CHASU,
+            U.EMP_NM,
+            E.EVU_EMP_ID,
+            CO.OBJ_NM AS ORG_NM,
+            MF.FEEDBACK_NOTE_MNG1
+        FROM EVU_EMP E
+                 INNER JOIN EVU_STD S ON (E.EVU_STD_ID = S.EVU_STD_ID)
+                 INNER JOIN [USER] U ON (E.EVU_EMP_ID = U.EMP_ID)
+            LEFT JOIN COMM_ORG_VIEW CO ON (CO.OBJ_ID = E.EMP_ORG_ID)
+            LEFT JOIN EVU_MNG M ON (E.EVU_EMP_NO = M.EVU_EMP_NO
+            AND M.CHASU IN (1, 2)
+            )
+            LEFT JOIN [USER] MU ON (M.EVU_MNG_ID = MU.EMP_ID)
+            LEFT JOIN EVU_STAT ST ON (E.CUR_STEP_CD = ST.EVU_STEP_CD AND E.CHASU = ST.CHASU AND E.EVU_STAT_CD = ST.EVU_STAT_CD)
+            LEFT JOIN EVU_STEP SP ON (ST.EVU_STEP_CD = SP.EVU_STEP_CD AND SP.EVU_STD_ID = S.EVU_STD_ID)
+            LEFT JOIN MNG_FEEDBACK MF ON(MF.EVU_EMP_NO = E.EVU_EMP_NO AND MF.CHASU  IN (1,2))
+        WHERE  E.EVU_STD_ID = #{evuStdId} and E.CUR_STEP_CD ='C0'
+        ORDER BY MF.FEEDBACK_NOTE_MNG1 DESC
+    </select>
 
 
+    <select id="selectTds2FeedbackResult" resultType="EvuTds2" parameterType="String">
+        SELECT
+            M.EVU_MNG_ID EVU_MNG_ID,
+            MU.EMP_NM MNG_NM,
+            MU.ORG_NM MNG_ORG_NM,
+            MF.CHASU,
+            U.EMP_NM,
+            E.EVU_EMP_ID,
+            CO.OBJ_NM AS ORG_NM,
+            MF.MNG1_FEEDBACK1
+        FROM EVU_EMP E
+                 INNER JOIN EVU_STD S ON (E.EVU_STD_ID = S.EVU_STD_ID)
+                 INNER JOIN [USER] U ON (E.EVU_EMP_ID = U.EMP_ID)
+            LEFT JOIN COMM_ORG_VIEW CO ON (CO.OBJ_ID = E.EMP_ORG_ID)
+            LEFT JOIN EVU_MNG M ON (E.EVU_EMP_NO = M.EVU_EMP_NO
+            AND M.CHASU IN (1, 2)
+            )
+            LEFT JOIN [USER] MU ON (M.EVU_MNG_ID = MU.EMP_ID)
+            LEFT JOIN EVU_STAT ST ON (E.CUR_STEP_CD = ST.EVU_STEP_CD AND E.CHASU = ST.CHASU AND E.EVU_STAT_CD = ST.EVU_STAT_CD)
+            LEFT JOIN EVU_STEP SP ON (ST.EVU_STEP_CD = SP.EVU_STEP_CD AND SP.EVU_STD_ID = S.EVU_STD_ID)
+            LEFT JOIN MNG_FEEDBACK MF ON(MF.EVU_EMP_NO = E.EVU_EMP_NO AND MF.CHASU  IN (1,2))
+        WHERE  E.EVU_STD_ID = #{evuStdId} and E.CUR_STEP_CD ='C0'
+        ORDER BY MF.MNG1_FEEDBACK1  DESC
+    </select>
+
+    <select id="selectTds2Cdp" resultType="EvuTotStandVo" parameterType="String" fetchSize="100">
+        SELECT
+            EE.EVU_STD_ID,
+            U.POST_CD,
+            U.EMP_ID,
+            U.EMP_NM,
+            U.POST_NM,
+            EC.CDP_NM,
+            EC.CDP_CD,
+            ECC.PRIORITY,
+            ECD.CUSTOM_YN,
+            ECC1.CATE_NM as cateNm1,
+            ECC2.CATE_NM as cateNm2,
+            ECD.COMP_TITLE,
+            ECD.DEFINE_CD,
+            ECO.MNG1_SCORE_2Q ,
+            ECO.MNG1_AF_SCORE_2Q
+        FROM EVU_EMP EE
+                 INNER JOIN [USER] U ON (U.EMP_ID = EE.EVU_EMP_ID AND U.POST_CD NOT IN('GB1','GB2','GB3','GB4','GB5','GBS1'))
+            LEFT JOIN EVU_EMP_CDP EEC ON (EEC.EVU_EMP_NO = EE.EVU_EMP_NO AND EE.CUR_STEP_CD = EEC.STEP_CD AND EEC.STEP_CD = 'C0')
+            LEFT JOIN EVU_CDP EC  ON (EEC.CDP_CD = EC.CDP_CD AND EC.EVU_STD_ID = EE.EVU_STD_ID)
+            LEFT JOIN EVU_COMP ECO ON (ECO.EVU_EMP_NO = EEC.EVU_EMP_NO AND ECO.EVU_STD_ID = EEC.EVU_STD_ID)
+            LEFT JOIN EVU_CDP_COMP ECC ON (ECC.EVU_CDP_COMP_ID = ECO.EVU_CDP_COMP_ID AND ECC.EVU_STD_ID = EEC.EVU_STD_ID )
+            LEFT JOIN EVU_COMP_DEFINE ECD ON (ECD.DEFINE_CD = ECC.DEFINE_CD)
+            LEFT JOIN EVU_COMP_CATE ECC1 ON (ECC1.CATE_CD = ECD.CATE_CD1)
+            LEFT JOIN EVU_COMP_CATE ECC2 ON (ECC2.CATE_CD = ECD.CATE_CD2)
+            LEFT JOIN EVU_COMP_CATE ECC3 ON (ECC3.CATE_CD = ECD.CATE_CD3)
+        WHERE EEC.EVU_STD_ID = #{evuStdId}
+        ORDER BY U.EMP_ID;
+    </select>
 
 
 

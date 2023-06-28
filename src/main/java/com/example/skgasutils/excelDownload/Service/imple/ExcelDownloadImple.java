@@ -2,10 +2,7 @@ package com.example.skgasutils.excelDownload.Service.imple;
 
 import com.example.skgasutils.Utils.Convert;
 import com.example.skgasutils.excelDownload.Service.ExcelDownloadService;
-import com.example.skgasutils.excelDownload.downloadVo.EvuEmpMngVo;
-import com.example.skgasutils.excelDownload.downloadVo.EvuTds1Vo;
-import com.example.skgasutils.excelDownload.downloadVo.EvuTotDiffVo;
-import com.example.skgasutils.excelDownload.downloadVo.EvuTotStandVo;
+import com.example.skgasutils.excelDownload.downloadVo.*;
 import com.example.skgasutils.mapper.CommonMapper;
 import com.example.skgasutils.mapper.ExcelDownloadMapper;
 import com.example.skgasutils.repository.EvuMng;
@@ -68,4 +65,21 @@ public class ExcelDownloadImple  implements ExcelDownloadService {
 
         return list;
     }
+
+    @Override
+    public List<EvuTds2> selectTds2FeedbackNotd(String evuStdId) {
+        return excelDownloadMapper.selectTds2FeedbackNotd(evuStdId);
+    }
+
+    @Override
+    public List<EvuTds2> selectTds2FeedbackResult(String evuStdId) {
+        return excelDownloadMapper.selectTds2FeedbackResult(evuStdId);
+    }
+
+    @Override
+    public List<EvuTotStandVo> selectTds2Cdp(String evuStdId) {
+        return excelDownloadMapper.selectTds2Cdp(evuStdId);
+    }
+
+
 }

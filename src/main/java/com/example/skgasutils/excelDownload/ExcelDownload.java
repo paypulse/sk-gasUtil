@@ -4,10 +4,7 @@ package com.example.skgasutils.excelDownload;
 import com.example.skgasutils.Utils.CommonRes;
 import com.example.skgasutils.Utils.FileOutput;
 import com.example.skgasutils.excelDownload.Service.ExcelDownloadService;
-import com.example.skgasutils.excelDownload.downloadVo.EvuEmpMngVo;
-import com.example.skgasutils.excelDownload.downloadVo.EvuTds1Vo;
-import com.example.skgasutils.excelDownload.downloadVo.EvuTotDiffVo;
-import com.example.skgasutils.excelDownload.downloadVo.EvuTotStandVo;
+import com.example.skgasutils.excelDownload.downloadVo.*;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -160,6 +157,127 @@ public class ExcelDownload {
         fileOutput.makeFile(response, fileOutput.xssfSheet, fileName);
 
     }
+
+
+    /**
+     * TDS2 피드백 노트
+     * */
+    @Operation(summary = "TDS2 피드백 노트", description = "TDS2 피드백 노트")
+    @GetMapping(value = "/selectTds2FeedbackNotd")
+    public void selectTds2FeedbackNotd(@RequestParam("evuStdId")String evuStdId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        List<EvuTds2>  result = excelDownloadService.selectTds2FeedbackNotd(evuStdId);
+        //excel 템플릿 양식 위치
+        String formPath ="/excelTemplate/feedbackNote.xlsx";
+        //excel file down 명
+        String fileName = "feedbackNote.xlsx";
+        FileOutput fileOutput = new FileOutput(formPath, request);
+        //style 적용 cell
+        int[] cellNum;
+
+        int rownum=3;
+        int columnIndex = 1;
+        for(EvuTds2 vo :result){
+            Row row = fileOutput.xssfSheet.createRow(rownum);
+            row.createCell(1).setCellValue(vo.getEvuMngId());
+            row.createCell(2).setCellValue(vo.getMngNm());
+            row.createCell(4).setCellValue(vo.getMngOrgNm());
+            row.createCell(6).setCellValue(vo.getEvuEmpId());
+            row.createCell(7).setCellValue(vo.getEmpNm());
+            row.createCell(9).setCellValue(vo.getOrgNm());
+            row.createCell(11).setCellValue(vo.getFeedbackNoteMng1());
+
+
+            rownum ++;
+        }
+
+        fileOutput.makeFile(response, fileOutput.xssfSheet, fileName);
+
+    }
+
+
+    @Operation(summary = "TDS2 피드백 결과", description = "TDS2 피드백 결과")
+    @GetMapping(value = "/selectTds2FeedbackResult")
+    public void selectTds2FeedbackResult(@RequestParam("evuStdId")String evuStdId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        List<EvuTds2>  result = excelDownloadService.selectTds2FeedbackResult(evuStdId);
+        //excel 템플릿 양식 위치
+        String formPath ="/excelTemplate/feedbackRecord.xlsx";
+        //excel file down 명
+        String fileName = "feedbackRecord.xlsx";
+        FileOutput fileOutput = new FileOutput(formPath, request);
+        //style 적용 cell
+        int[] cellNum;
+
+        int rownum=3;
+        int columnIndex = 1;
+        for(EvuTds2 vo :result){
+            Row row = fileOutput.xssfSheet.createRow(rownum);
+            row.createCell(1).setCellValue(vo.getEvuMngId());
+            row.createCell(2).setCellValue(vo.getMngNm());
+            row.createCell(4).setCellValue(vo.getMngOrgNm());
+            row.createCell(6).setCellValue(vo.getEvuEmpId());
+            row.createCell(7).setCellValue(vo.getEmpNm());
+            row.createCell(9).setCellValue(vo.getOrgNm());
+            row.createCell(11).setCellValue(vo.getChasu());
+            row.createCell(13).setCellValue(vo.getMng1Feedback1());
+
+
+            rownum ++;
+        }
+
+        fileOutput.makeFile(response, fileOutput.xssfSheet, fileName);
+
+    }
+
+    /**
+     * 2. (2022년 이후) TDS2 기준
+     * */
+    @Operation(summary = "TDS2 평가기준 다운로드", description = " 2. (2022년 이후) TDS2 기준 엑셀 다운로드")
+    @GetMapping(value = "/selectTds2Cdp")
+    public void selectTds2Cdp(@RequestParam("evuStdId")String evuStdId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        //list 출력
+        List<EvuTotStandVo> result = excelDownloadService.selectTds2Cdp(evuStdId);
+
+        //excel 템플릿 양식 위치
+        String formPath ="/excelTemplate/indiviaul_capability_tds2.xlsx";
+
+        //excel file down 명
+        String fileName = "indivisual_capability_tds2.xlsx";
+
+        FileOutput fileOutput = new FileOutput(formPath, request);
+
+        int rownum=2;
+        int columnIndex = 1;
+        for(EvuTotStandVo vo :result){
+            Row row = fileOutput.xssfSheet.createRow(rownum);
+            row.createCell(1).setCellValue(vo.getEmpNm());
+            row.createCell(2).setCellValue(vo.getEmpId());
+            row.createCell(3).setCellValue(vo.getPostNm());
+            row.createCell(4).setCellValue(vo.getCdpNm());
+            row.createCell(5).setCellValue(vo.getCateNm1());
+            row.createCell(6).setCellValue(vo.getCateNm2());
+            row.createCell(7).setCellValue(vo.getCompTitle());
+            row.createCell(8).setCellValue(vo.getDefineCd());
+            row.createCell(9).setCellValue(vo.getCustomYn());
+            row.createCell(10).setCellValue(vo.getPriority());
+            row.createCell(11).setCellValue(vo.getMng1Score2q());
+            row.createCell(12).setCellValue(vo.getMng1Afscore2q());
+
+
+
+            rownum ++;
+        }
+
+        fileOutput.makeFile(response, fileOutput.xssfSheet, fileName);
+
+    }
+
+
+
+
+
 
 
     /**
